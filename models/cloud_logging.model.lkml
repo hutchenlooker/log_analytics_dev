@@ -59,7 +59,7 @@ explore: audit_logs {
     ${ip_to_geo_mapping.class_b} = ${audit_logs.class_b} AND
     ${audit_logs.caller_ipv4} BETWEEN ${ip_to_geo_mapping.start_ipv4_to_int64}
     and ${ip_to_geo_mapping.end_ipv4_int64};;
-    }
+  }
 
   join: ip_stats {
     view_label: "6) IP Stats"
@@ -274,15 +274,16 @@ explore: network_logs {
 
 
   always_filter: {
-      # always filter on VPC flow logs
-      filters: [network_logs.log_id: "compute.googleapis.com/vpc_flows"]
-      # to reduce inadverent expensive queries, default all explore queries to last 1 day (today)
-      filters: [network_logs.timestamp_date: "last 1 days"]
-    }
+    # always filter on VPC flow logs
+    filters: [network_logs.log_id: "compute.googleapis.com/vpc_flows"]
+    # to reduce inadverent expensive queries, default all explore queries to last 1 day (today)
+    filters: [network_logs.timestamp_date: "last 1 days"]
+  }
 
-  join: dt_network_ip_stats {
+  join: ip_details_src {
+    from: dt_network_ip_stats
     view_label: "4) IP Details - Source"
-    sql_on: ${network_logs.src_ip} = ${dt_network_ip_stats.ip} ;;
+    sql_on: ${network_logs.src_ip} = ${ip_details_src.ip} ;;
     relationship: many_to_one
   }
 
