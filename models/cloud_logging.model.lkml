@@ -52,6 +52,7 @@ explore: all_logs {
   }
 
   join: ip_to_geo_mapping {
+    view_label: "7) IP Geography"
     type: left_outer
     relationship: many_to_one
     # note: this only works for IPv4 address right now, not IPv6
@@ -62,7 +63,7 @@ explore: all_logs {
     }
 
   join: ip_stats {
-    view_label: "IP Stats"
+    view_label: "6) IP Stats"
     type: left_outer
     relationship: many_to_one
     sql_on: ${all_logs.proto_payload__audit_log__request_metadata__caller_ip} = ${ip_stats.caller_ip}   ;;

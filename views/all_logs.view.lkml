@@ -5,12 +5,15 @@ view: all_logs {
   # parameters
 
   parameter: search_filter {
+    view_label: "1) All Logs"
     # used for searching across columns in the table
     suggestable: no
     type: unquoted
   }
 
   parameter: date_granularity {
+    hidden: yes
+    view_label: "1) All Logs"
     description: "Use to make visualizations with dynamic date granulairty"
     type: unquoted
     default_value: "hour"
@@ -33,6 +36,8 @@ view: all_logs {
   }
 
   dimension: date {
+    hidden: yes
+    view_label: "1) All Logs"
     description: "For use with the 'Date Granularity' filter"
     sql:
     {% if date_granularity._parameter_value == 'hour' %}
@@ -279,6 +284,7 @@ view: all_logs {
   }
 
   dimension: json_payload_string {
+    view_label: "1) All Logs"
     label: "JSON Payload"
     # Looker currently cannot display the JSON datatype. So need to convert it to STRING to display.
     type: string
@@ -292,6 +298,7 @@ view: all_logs {
   }
 
   dimension: labels_string {
+    view_label: "1) All Logs"
     label: "Labels"
     # Looker currently cannot display the JSON datatype. So need to convert it to STRING to display.
     type: string
@@ -299,6 +306,7 @@ view: all_logs {
   }
 
   dimension: operation__first {
+    view_label: "1) All Logs"
     type: yesno
     sql: ${TABLE}.operation.first ;;
     group_label: "Operation"
@@ -306,6 +314,7 @@ view: all_logs {
   }
 
   dimension: operation__id {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.operation.id ;;
     group_label: "Operation"
@@ -313,6 +322,7 @@ view: all_logs {
   }
 
   dimension: operation__last {
+    view_label: "1) All Logs"
     type: yesno
     sql: ${TABLE}.operation.last ;;
     group_label: "Operation"
@@ -320,6 +330,7 @@ view: all_logs {
   }
 
   dimension: operation__producer {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.operation.producer ;;
     group_label: "Operation"
@@ -434,6 +445,7 @@ view: all_logs {
   }
 
   measure: method_count {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     type: count_distinct
     sql: ${proto_payload__audit_log__method_name} ;;
     drill_fields: [timestamp_time, log_type, proto_payload__audit_log__authentication_info__principal_email, proto_payload__audit_log__service_name, proto_payload__audit_log__resource_name, proto_payload__audit_log__method_name]
@@ -458,11 +470,13 @@ view: all_logs {
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
 
   measure: login_count {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     type: count
     filters: [is_login: "Yes"]
   }
 
   measure: login_from_admin {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     # CSA 1.01
     type: count
     filters: [
@@ -472,11 +486,13 @@ view: all_logs {
   }
 
   measure: total_proto_payload__audit_log__num_response_items {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     type: sum
     sql: ${proto_payload__audit_log__num_response_items} ;;
   }
 
   measure: average_proto_payload__audit_log__num_response_items {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     type: average
     sql: ${proto_payload__audit_log__num_response_items} ;;
   }
@@ -540,7 +556,7 @@ view: all_logs {
   }
 
   dimension: caller_ipv4 {
-    #hidden: yes
+    hidden: yes
     type: number
     sql: CASE
          WHEN ${TABLE}.proto_payload.audit_log.request_metadata.caller_ip = 'private' THEN 0
@@ -559,7 +575,7 @@ view: all_logs {
          WHEN REGEXP_CONTAINS(${TABLE}.proto_payload.audit_log.request_metadata.caller_ip, r"-") THEN 0
     ELSE TRUNC(NET.IPV4_TO_INT64(NET.IP_FROM_STRING(${TABLE}.proto_payload.audit_log.request_metadata.caller_ip))/(256*256))
     END     ;;
-    #hidden: yes
+    hidden: yes
   }
 
   dimension: proto_payload__audit_log__request_metadata__caller_network {
@@ -724,6 +740,7 @@ view: all_logs {
   }
 
   dimension_group: proto_payload__audit_log__request_metadata__request_attributes_ {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Request Metadata Request Attributes"
     type: time
     timeframes: [
       raw,
@@ -873,25 +890,26 @@ view: all_logs {
   dimension: proto_payload__request_log__app_engine_release {
     type: string
     sql: ${TABLE}.proto_payload.request_log.app_engine_release ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "App Engine Release"
   }
 
   dimension: proto_payload__request_log__app_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.app_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "App ID"
   }
 
   dimension: proto_payload__request_log__cost {
     type: number
     sql: ${TABLE}.proto_payload.request_log.cost ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Cost"
   }
 
   dimension_group: proto_payload__request_log__end {
+    view_label: "4) Audit Log - Proto Payload Request Log"
     type: time
     timeframes: [
       raw,
@@ -908,56 +926,56 @@ view: all_logs {
   dimension: proto_payload__request_log__end_time_unix_nanos {
     type: number
     sql: ${TABLE}.proto_payload.request_log.end_time_unix_nanos ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "End Time Unix Nanos"
   }
 
   dimension: proto_payload__request_log__finished {
     type: yesno
     sql: ${TABLE}.proto_payload.request_log.finished ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Finished"
   }
 
   dimension: proto_payload__request_log__first {
     type: yesno
     sql: ${TABLE}.proto_payload.request_log.first ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "First"
   }
 
   dimension: proto_payload__request_log__host {
     type: string
     sql: ${TABLE}.proto_payload.request_log.host ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Host"
   }
 
   dimension: proto_payload__request_log__http_version {
     type: string
     sql: ${TABLE}.proto_payload.request_log.http_version ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "HTTP Version"
   }
 
   dimension: proto_payload__request_log__instance_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.instance_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Instance ID"
   }
 
   dimension: proto_payload__request_log__instance_index {
     type: number
     sql: ${TABLE}.proto_payload.request_log.instance_index ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Instance Index"
   }
 
   dimension: proto_payload__request_log__ip {
     type: string
     sql: ${TABLE}.proto_payload.request_log.ip ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "IP"
   }
 
@@ -978,35 +996,35 @@ view: all_logs {
   dimension: proto_payload__request_log__line {
     hidden: yes
     sql: ${TABLE}.proto_payload.request_log.line ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Line"
   }
 
   dimension: proto_payload__request_log__mega_cycles {
     type: number
     sql: ${TABLE}.proto_payload.request_log.mega_cycles ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Mega Cycles"
   }
 
   dimension: proto_payload__request_log__method {
     type: string
     sql: ${TABLE}.proto_payload.request_log.method ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Method"
   }
 
   dimension: proto_payload__request_log__module_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.module_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Module ID"
   }
 
   dimension: proto_payload__request_log__nickname {
     type: string
     sql: ${TABLE}.proto_payload.request_log.nickname ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Nickname"
   }
 
@@ -1027,46 +1045,47 @@ view: all_logs {
   dimension: proto_payload__request_log__referrer {
     type: string
     sql: ${TABLE}.proto_payload.request_log.referrer ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Referrer"
   }
 
   dimension: proto_payload__request_log__request_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.request_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Request ID"
   }
 
   dimension: proto_payload__request_log__resource {
     type: string
     sql: ${TABLE}.proto_payload.request_log.resource ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Resource"
   }
 
   dimension: proto_payload__request_log__response_size {
     type: number
     sql: ${TABLE}.proto_payload.request_log.response_size ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Response Size"
   }
 
   dimension: proto_payload__request_log__source_reference {
     hidden: yes
     sql: ${TABLE}.proto_payload.request_log.source_reference ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Source Reference"
   }
 
   dimension: proto_payload__request_log__span_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.span_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Span ID"
   }
 
   dimension_group: proto_payload__request_log__start {
+    view_label: "4) Audit Log - Proto Payload Request Log"
     type: time
     timeframes: [
       raw,
@@ -1083,81 +1102,82 @@ view: all_logs {
   dimension: proto_payload__request_log__start_time_unix_nanos {
     type: number
     sql: ${TABLE}.proto_payload.request_log.start_time_unix_nanos ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Start Time Unix Nanos"
   }
 
   dimension: proto_payload__request_log__status {
     type: number
     sql: ${TABLE}.proto_payload.request_log.status ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Status"
   }
 
   dimension: proto_payload__request_log__task_name {
     type: string
     sql: ${TABLE}.proto_payload.request_log.task_name ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Task Name"
   }
 
   dimension: proto_payload__request_log__task_queue_name {
     type: string
     sql: ${TABLE}.proto_payload.request_log.task_queue_name ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Task Queue Name"
   }
 
   dimension: proto_payload__request_log__trace_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.trace_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Trace ID"
   }
 
   dimension: proto_payload__request_log__trace_sampled {
     type: yesno
     sql: ${TABLE}.proto_payload.request_log.trace_sampled ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Trace Sampled"
   }
 
   dimension: proto_payload__request_log__url_map_entry {
     type: string
     sql: ${TABLE}.proto_payload.request_log.url_map_entry ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "URL Map Entry"
   }
 
   dimension: proto_payload__request_log__user_agent {
     type: string
     sql: ${TABLE}.proto_payload.request_log.user_agent ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "User Agent"
   }
 
   dimension: proto_payload__request_log__version_id {
     type: string
     sql: ${TABLE}.proto_payload.request_log.version_id ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Version ID"
   }
 
   dimension: proto_payload__request_log__was_loading_request {
     type: yesno
     sql: ${TABLE}.proto_payload.request_log.was_loading_request ;;
-    view_label: "4) Audit Log - Proto Payload Request Log"    group_label: "Proto Payload Request Log"
+    view_label: "4) Audit Log - Proto Payload Request Log"
     group_item_label: "Was Loading Request"
   }
 
   dimension: proto_payload__type {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "Main Fields"
     type: string
     sql: ${TABLE}.proto_payload.type ;;
-    group_label: "Proto Payload"
-    group_item_label: "Type"
+    label: "Type"
   }
 
   dimension_group: receive_timestamp {
+    view_label: "1) All Logs"
     type: time
     timeframes: [
       raw,
@@ -1172,6 +1192,7 @@ view: all_logs {
   }
 
   dimension: receive_timestamp_unix_nanos {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.receive_timestamp_unix_nanos ;;
   }
@@ -1179,13 +1200,15 @@ view: all_logs {
 
 
   dimension: source_location__file {
+    view_label: "1) All Logs"
+    group_label: "Source Location"
     type: string
     sql: ${TABLE}.source_location.file ;;
-    group_label: "Source Location"
     group_item_label: "File"
   }
 
   dimension: source_location__function {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.source_location.function ;;
     group_label: "Source Location"
@@ -1193,6 +1216,7 @@ view: all_logs {
   }
 
   dimension: source_location__line {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.source_location.line ;;
     group_label: "Source Location"
@@ -1200,11 +1224,13 @@ view: all_logs {
   }
 
   dimension: span_id {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.span_id ;;
   }
 
   dimension: split__index {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.split.index ;;
     group_label: "Split"
@@ -1212,6 +1238,7 @@ view: all_logs {
   }
 
   dimension: split__total_splits {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.split.total_splits ;;
     group_label: "Split"
@@ -1219,6 +1246,7 @@ view: all_logs {
   }
 
   dimension: split__uid {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.split.uid ;;
     group_label: "Split"
@@ -1226,6 +1254,7 @@ view: all_logs {
   }
 
   dimension: text_payload {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.text_payload ;;
   }
@@ -1233,11 +1262,13 @@ view: all_logs {
 
 
   dimension: trace {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.trace ;;
   }
 
   dimension: trace_sampled {
+    view_label: "1) All Logs"
     type: yesno
     sql: ${TABLE}.trace_sampled ;;
   }
@@ -1245,6 +1276,8 @@ view: all_logs {
 ############# Derived Fields ############
 
   dimension: is_audit_log {
+    view_label: "1) All Logs"
+    hidden: yes
     description: "Use to filter on Audit Logs"
     type: yesno
     sql:  log_name LIKE "%cloudaudit.googleapis.com%";;
@@ -1253,6 +1286,8 @@ view: all_logs {
 
 
   dimension: is_load_balancer_log {
+    view_label: "1) All Logs"
+    hidden: yes
     type: yesno
     sql: ${resource__type} = 'http_load_balancer' ;;
   }
@@ -1262,25 +1297,30 @@ view: all_logs {
 
 ##### Audit Log Metadata for VPC logs
   dimension: violation_reason {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "VPC Metadata"
     type: string
     sql:  JSON_VALUE(proto_payload.audit_log.metadata.violationReason);;
   }
 
   dimension: ingress_violations {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "VPC Metadata"
     sql: JSON_VALUE(proto_payload.audit_log.metadata.ingressViolations) ;;
   }
 
   dimension: violation_type {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "VPC Metadata"
     sql: IF(${ingress_violations} IS NULL, 'ingress', 'egress')  ;;
   }
 
   dimension: metadata_type {
+    view_label: "3) Audit Log - Proto Payload"    group_label: "VPC Metadata"
     sql: JSON_VALUE(proto_payload.audit_log.metadata, '$."@type"') ;;
   }
 
   # Measures
 
   measure: count {
+    view_label: "1) All Logs"
     label: "Event Count"
     type: count
     drill_fields: [detail*]
@@ -1293,7 +1333,7 @@ view: all_logs {
   #####################################################
 
   measure: count_dal_event {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     label: "Count Data Access Events"
     type: count
     filters: [log_id: "cloudaudit.googleapis.com/data_access"]
@@ -1303,7 +1343,7 @@ view: all_logs {
 
   dimension: is_bq_dal_event {
     #5.01 - BQ records duplicate events one with an old method name, and another with a v2 method name. So need to filter on the v2's to make sure you don't count dupes.
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     label: "Is BigQuery Data Access Event"
     description: "Data Access Insert or Query"
@@ -1313,20 +1353,20 @@ view: all_logs {
   }
 
   dimension: job_config_type {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     sql: JSON_VALUE(proto_payload.audit_log.metadata.jobChange.job.jobConfig.type)  ;;
   }
 
   dimension: is_query_job {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     type: yesno
     sql: ${job_config_type} = "QUERY" ;;
   }
 
   measure: data_access_bq {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     # CSA 5.01 https://github.com/GoogleCloudPlatform/security-analytics/blob/main/src/5.01/5.01.md
     label: "Count Data Access - BigQuery"
@@ -1335,7 +1375,7 @@ view: all_logs {
   }
 
   measure: billed_bytes {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     # CSA 5.02
     type: sum
@@ -1344,7 +1384,7 @@ view: all_logs {
   }
 
   measure: billed_tb {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     label: "Billed TBs"
     description: "Billed Terabytes"
@@ -1355,7 +1395,7 @@ view: all_logs {
   }
 
   measure: billed_gb {
-    view_label: "Data Access Logs"
+    view_label: "5) Audit Log - Data Access Logs"
     group_label: "BigQuery"
     label: "Billed GBs"
     description: "Billed Gigabytes"
@@ -1394,16 +1434,22 @@ view: all_logs__proto_payload__request_log__line {
   # This dimension will be called "Log Message" in Explore.
 
   dimension: log_message {
+    view_label: "4) Audit Log - Proto Payload Request Log"
+    group_label: "Log Line"
     type: string
     sql: ${TABLE}.log_message ;;
   }
 
   dimension: severity {
+    view_label: "4) Audit Log - Proto Payload Request Log"
+    group_label: "Log Line"
     type: string
     sql: ${TABLE}.severity ;;
   }
 
   dimension: severity_number {
+    view_label: "4) Audit Log - Proto Payload Request Log"
+    group_label: "Log Line"
     type: number
     sql: ${TABLE}.severity_number ;;
   }
@@ -1414,6 +1460,7 @@ view: all_logs__proto_payload__request_log__line {
 
 
   dimension: source_location__file {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.source_location.file ;;
     group_label: "Source Location"
@@ -1421,6 +1468,7 @@ view: all_logs__proto_payload__request_log__line {
   }
 
   dimension: source_location__function_name {
+    view_label: "1) All Logs"
     type: string
     sql: ${TABLE}.source_location.function_name ;;
     group_label: "Source Location"
@@ -1428,6 +1476,7 @@ view: all_logs__proto_payload__request_log__line {
   }
 
   dimension: source_location__line {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.source_location.line ;;
     group_label: "Source Location"
@@ -1438,6 +1487,7 @@ view: all_logs__proto_payload__request_log__line {
   # Looker converts dates and timestamps to the specified timeframes within the dimension group.
 
   dimension_group: time {
+    view_label: "1) All Logs"
     type: time
     timeframes: [
       raw,
@@ -1452,6 +1502,7 @@ view: all_logs__proto_payload__request_log__line {
   }
 
   dimension: time_unix_nanos {
+    view_label: "1) All Logs"
     type: number
     sql: ${TABLE}.time_unix_nanos ;;
   }
