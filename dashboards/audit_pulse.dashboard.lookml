@@ -8,9 +8,9 @@
   - title: Services
     name: Services
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: single_value
-    fields: [all_logs.service_count]
+    fields: [audit_logs.service_count]
     filters: {}
     limit: 500
     column_limit: 50
@@ -25,8 +25,8 @@
     conditional_formatting_include_nulls: false
     defaults_version: 1
     listen:
-      Date Filter: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 0
     col: 0
     width: 6
@@ -34,9 +34,9 @@
   - title: IPs
     name: IPs
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: single_value
-    fields: [all_logs.ip_count]
+    fields: [audit_logs.ip_count]
     filters: {}
     limit: 500
     column_limit: 50
@@ -52,8 +52,8 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Date Filter: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 0
     col: 6
     width: 6
@@ -61,9 +61,9 @@
   - title: Principals
     name: Principals
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: single_value
-    fields: [all_logs.principal_count]
+    fields: [audit_logs.principal_count]
     filters: {}
     limit: 500
     column_limit: 50
@@ -79,8 +79,8 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Date Filter: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 0
     col: 12
     width: 6
@@ -88,9 +88,9 @@
   - title: Methods
     name: Methods
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: single_value
-    fields: [all_logs.method_count]
+    fields: [audit_logs.method_count]
     filters: {}
     limit: 500
     column_limit: 50
@@ -106,8 +106,8 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Date Filter: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 0
     col: 18
     width: 6
@@ -115,11 +115,11 @@
   - title: Methods Trend
     name: Methods Trend
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_line
-    fields: [all_logs.method_count, all_logs.date]
+    fields: [audit_logs.method_count, audit_logs.date]
     filters: {}
-    sorts: [all_logs.date]
+    sorts: [audit_logs.date]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -146,8 +146,8 @@
     y_axis_combined: true
     show_null_points: false
     interpolation: linear
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.total_methods_used,
-            id: all_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.total_methods_used,
+            id: audit_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
         showValues: false, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
@@ -166,9 +166,9 @@
     hidden_pivots: {}
     title_hidden: true
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 3
     col: 18
     width: 6
@@ -176,11 +176,11 @@
   - title: Services Trend
     name: Services Trend
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_line
-    fields: [all_logs.service_count, all_logs.date]
+    fields: [audit_logs.service_count, audit_logs.date]
     filters: {}
-    sorts: [all_logs.date]
+    sorts: [audit_logs.date]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -207,7 +207,7 @@
     y_axis_combined: true
     show_null_points: false
     interpolation: linear
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.total_methods_used,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.total_methods_used,
             id: all_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
         showValues: false, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
@@ -227,9 +227,9 @@
     hidden_pivots: {}
     title_hidden: true
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 3
     col: 0
     width: 6
@@ -237,11 +237,11 @@
   - title: IP Trend
     name: IP Trend
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_line
-    fields: [all_logs.ip_count, all_logs.date]
+    fields: [audit_logs.ip_count, audit_logs.date]
     filters: {}
-    sorts: [all_logs.date]
+    sorts: [audit_logs.date]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -268,8 +268,8 @@
     y_axis_combined: true
     show_null_points: false
     interpolation: linear
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.total_methods_used,
-            id: all_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.total_methods_used,
+            id: audit_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
         showValues: false, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
@@ -288,9 +288,9 @@
     hidden_pivots: {}
     title_hidden: true
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 3
     col: 6
     width: 6
@@ -298,11 +298,11 @@
   - title: Principals Trend
     name: Principals Trend
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_line
-    fields: [all_logs.principal_count, all_logs.date]
+    fields: [audit_logs.principal_count, audit_logs.date]
     filters: {}
-    sorts: [all_logs.date]
+    sorts: [audit_logs.date]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -329,8 +329,8 @@
     y_axis_combined: true
     show_null_points: false
     interpolation: linear
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.total_methods_used,
-            id: all_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.total_methods_used,
+            id: audit_logs.total_methods_used, name: Total Methods Used}], showLabels: false,
         showValues: false, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
@@ -349,9 +349,9 @@
     hidden_pivots: {}
     title_hidden: true
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 3
     col: 12
     width: 6
@@ -359,14 +359,14 @@
   - title: Top IP Activity
     name: Top IP Activity
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_bar
-    fields: [all_logs.proto_payload__audit_log__request_metadata__caller_ip, all_logs.service_count,
-      all_logs.method_count, all_logs.count]
+    fields: [audit_logs.proto_payload__audit_log__request_metadata__caller_ip, audit_logs.service_count,
+      audit_logs.method_count, audit_logs.count]
     filters:
-      all_logs.proto_payload__audit_log__request_metadata__caller_ip: "-NULL,-private"
-      all_logs.is_system_or_service_account: 'No'
-    sorts: [all_logs.count desc]
+      audit_logs.proto_payload__audit_log__request_metadata__caller_ip: "-NULL,-private"
+      audit_logs.is_system_or_service_account: 'No'
+    sorts: [audit_logs.count desc]
     limit: 20
     column_limit: 50
     x_axis_gridlines: false
@@ -401,22 +401,22 @@
       palette_id: 55dee055-18cf-4472-9669-469322a6f264
       options:
         steps: 5
-    y_axes: [{label: !!null '', orientation: top, series: [{axisId: all_logs.service_count,
-            id: all_logs.service_count, name: Service Count}], showLabels: true, showValues: true,
+    y_axes: [{label: !!null '', orientation: top, series: [{axisId: audit_logs.service_count,
+            id: audit_logs.service_count, name: Service Count}], showLabels: true, showValues: true,
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear},
-      {label: '', orientation: bottom, series: [{axisId: all_logs.method_count, id: all_logs.method_count,
+      {label: '', orientation: bottom, series: [{axisId: audit_logs.method_count, id: audit_logs.method_count,
             name: Method Count}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
-    size_by_field: all_logs.method_count
+    size_by_field: audit_logs.method_count
     x_axis_zoom: true
     y_axis_zoom: true
     series_types:
-      all_logs.method_count: scatter
+      audit_logs.method_count: scatter
     series_colors:
-      all_logs.method_count: "#93CF6C"
+      audit_logs.method_count: "#93CF6C"
     series_labels: {}
     defaults_version: 1
-    hidden_fields: [all_logs.count]
+    hidden_fields: [audit_logs.count]
     hidden_points_if_no: []
     hidden_pivots: {}
     show_row_numbers: true
@@ -437,9 +437,9 @@
     note_display: hover
     note_text: Number of Services accessed by IP and Methods executed by IP
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 6
     col: 0
     width: 12
@@ -447,15 +447,15 @@
   - title: Top Principals by Service
     name: Top Principals by Service
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_donut_multiples
-    fields: [all_logs.proto_payload__audit_log__authentication_info__principal_email,
-      all_logs.proto_payload__audit_log__service_name, all_logs.count]
-    pivots: [all_logs.proto_payload__audit_log__service_name]
+    fields: [audit_logs.proto_payload__audit_log__authentication_info__principal_email,
+      audit_logs.proto_payload__audit_log__service_name, audit_logs.count]
+    pivots: [audit_logs.proto_payload__audit_log__service_name]
     filters:
-      all_logs.is_system_or_service_account: 'No'
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: "-NULL"
-    sorts: [all_logs.proto_payload__audit_log__service_name, all_logs.count desc 0]
+      audit_logs.is_system_or_service_account: 'No'
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: "-NULL"
+    sorts: [audit_logs.proto_payload__audit_log__service_name, audit_logs.count desc 0]
     limit: 9
     column_limit: 50
     show_value_labels: false
@@ -467,9 +467,9 @@
       options:
         steps: 5
     series_colors:
-      container - all_logs.count: "#93CF6C"
-      cloudsql - all_logs.count: "#FFE663"
-      cloudasset - all_logs.count: "#5DC370"
+      container - audit_logs.count: "#93CF6C"
+      cloudsql - audit_logs.count: "#FFE663"
+      cloudasset - audit_logs.count: "#5DC370"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -500,9 +500,9 @@
     series_types: {}
     hidden_pivots: {}
     listen:
-      Date Filter: all_logs.timestamp_date
-      Date Granularity: all_logs.date_granularity
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date Filter: audit_logs.timestamp_date
+      Date Granularity: audit_logs.date_granularity
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 6
     col: 12
     width: 12
@@ -519,9 +519,9 @@
       display: inline
       options: []
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.timestamp_date
+    field: audit_logs.timestamp_date
   - name: Date Granularity
     title: Date Granularity
     type: field_filter
@@ -532,9 +532,9 @@
       type: button_toggles
       display: inline
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.date_granularity
+    field: audit_logs.date_granularity
   - name: Service(s)
     title: Service(s)
     type: field_filter
@@ -546,6 +546,6 @@
       display: popover
       options: []
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.proto_payload__audit_log__service_name
+    field: audit_logs.proto_payload__audit_log__service_name

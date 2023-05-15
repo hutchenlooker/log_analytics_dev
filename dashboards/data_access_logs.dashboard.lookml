@@ -8,16 +8,16 @@
   - title: Top Users who Accessed Data
     name: Top Users who Accessed Data
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_bar
-    fields: [all_logs.proto_payload__audit_log__authentication_info__principal_email,
-      all_logs.count_dal_event, all_logs.proto_payload__audit_log__service_name]
-    pivots: [all_logs.proto_payload__audit_log__service_name]
+    fields: [audit_logs.proto_payload__audit_log__authentication_info__principal_email,
+      audit_logs.count_dal_event, audit_logs.proto_payload__audit_log__service_name]
+    pivots: [audit_logs.proto_payload__audit_log__service_name]
     filters:
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: "-NULL"
-      all_logs.is_system_or_service_account: 'No'
-      all_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
-    sorts: [all_logs.proto_payload__audit_log__service_name, all_logs.count_dal_event
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: "-NULL"
+      audit_logs.is_system_or_service_account: 'No'
+      audit_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
+    sorts: [audit_logs.proto_payload__audit_log__service_name, audit_logs.count_dal_event
         desc 0]
     limit: 500
     column_limit: 50
@@ -54,11 +54,11 @@
       options:
         steps: 5
     y_axes: [{label: Data Access Events, orientation: bottom, series: [{axisId: bigquery
-              - _all_logs.count_dal_event, id: bigquery - _all_logs.count_dal_event,
-            name: bigquery}, {axisId: cloudsql - _all_logs.count_dal_event, id: cloudsql
-              - _all_logs.count_dal_event, name: cloudsql}, {axisId: k8s - _all_logs.count_dal_event,
-            id: k8s - _all_logs.count_dal_event, name: k8s}, {axisId: storage - _all_logs.count_dal_event,
-            id: storage - _all_logs.count_dal_event, name: storage}], showLabels: true,
+              - _audit_logs.count_dal_event, id: bigquery - _audit_logs.count_dal_event,
+            name: bigquery}, {axisId: cloudsql - _audit_logs.count_dal_event, id: cloudsql
+              - _audit_logs.count_dal_event, name: cloudsql}, {axisId: k8s - _audit_logs.count_dal_event,
+            id: k8s - _audit_logs.count_dal_event, name: k8s}, {axisId: storage - _audit_logs.count_dal_event,
+            id: storage - _audit_logs.count_dal_event, name: storage}], showLabels: true,
         showValues: true, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_label: User
@@ -85,8 +85,8 @@
     note_display: hover
     note_text: CSA 5.01
     listen:
-      Service(s): all_logs.proto_payload__audit_log__service_name
-      Date: all_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
+      Date: audit_logs.timestamp_date
     row: 2
     col: 13
     width: 11
@@ -94,16 +94,16 @@
   - title: Cloud Storage Object Accessed by New IP
     name: Cloud Storage Object Accessed by New IP
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_grid
-    fields: [all_logs.proto_payload__audit_log__request_metadata__caller_ip, all_logs.proto_payload__audit_log__authentication_info__principal_email,
-      all_logs.timestamp_date, ip_stats.first_instance_time, ip_stats.last_instance_time,
-      all_logs.method_count, all_logs.resource_count]
+    fields: [audit_logs.proto_payload__audit_log__request_metadata__caller_ip, audit_logs.proto_payload__audit_log__authentication_info__principal_email,
+      audit_logs.timestamp_date, ip_stats.first_instance_time, ip_stats.last_instance_time,
+      audit_logs.method_count, audit_logs.resource_count]
     filters:
-      all_logs.is_system_or_service_account: 'No'
-      all_logs.proto_payload__audit_log__service_name: storage
+      audit_logs.is_system_or_service_account: 'No'
+      audit_logs.proto_payload__audit_log__service_name: storage
       ip_stats.is_new_ip: 'Yes'
-    sorts: [all_logs.timestamp_date desc]
+    sorts: [audit_logs.timestamp_date desc]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -129,38 +129,38 @@
     show_row_totals: true
     truncate_header: false
     series_labels:
-      _all_logs.timestamp_time: Timestamp
+      _audit_logs.timestamp_time: Timestamp
       user_ip_stats.first_instance_time: IP First Used
       user_ip_stats.last_instance_time: IP Last Used
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: Email
-      all_logs.proto_payload__audit_log__request_metadata__caller_ip: New IP
-      all_logs.proto_payload__audit_log__method_name: Method Name
-      all_logs.proto_payload__audit_log__resource_name: Resource Name
-      all_logs.timestamp_date: Access Date
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: Email
+      audit_logs.proto_payload__audit_log__request_metadata__caller_ip: New IP
+      audit_logs.proto_payload__audit_log__method_name: Method Name
+      audit_logs.proto_payload__audit_log__resource_name: Resource Name
+      audit_logs.timestamp_date: Access Date
       ip_stats.first_instance_time: IP First Appears
       ip_stats.last_instance_time: IP Last Appears
     series_column_widths:
-      _all_logs.proto_payload__audit_log__authentication_info__principal_email: 187
-      _all_logs.timestamp_date: 123
+      _audit_logs.proto_payload__audit_log__authentication_info__principal_email: 187
+      _audit_logs.timestamp_date: 123
       user_ip_stats.first_instance_time: 155
-      _all_logs.proto_payload__audit_log__resource_name: 421
+      _audit_logs.proto_payload__audit_log__resource_name: 421
       user_ip_stats.last_instance_time: 160
-      _all_logs.proto_payload__audit_log__request_metadata__caller_ip: 256
-      all_logs.timestamp_date: 173
-      all_logs.proto_payload__audit_log__resource_name: 438
+      _audit_logs.proto_payload__audit_log__request_metadata__caller_ip: 256
+      audit_logs.timestamp_date: 173
+      audit_logs.proto_payload__audit_log__resource_name: 438
       ip_stats.first_instance_date: 118
       ip_stats.last_instance_date: 133
-      all_logs.proto_payload__audit_log__method_name: 235
-      all_logs.proto_payload__audit_log__request_metadata__caller_ip: 403
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: 345
+      audit_logs.proto_payload__audit_log__method_name: 235
+      audit_logs.proto_payload__audit_log__request_metadata__caller_ip: 403
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: 345
       ip_stats.first_instance_time: 169
       ip_stats.last_instance_time: 171
-      all_logs.method_count: 193
-      all_logs.resource_count: 234
+      audit_logs.method_count: 193
+      audit_logs.resource_count: 234
     series_cell_visualizations:
-      all_logs.method_count:
+      audit_logs.method_count:
         is_active: true
-      all_logs.resource_count:
+      audit_logs.resource_count:
         is_active: true
         palette:
           palette_id: 540a327a-0a3a-035b-8109-81be398be765
@@ -169,7 +169,7 @@
           - "#436FB8"
           - "#170658"
     series_text_format:
-      all_logs.proto_payload__audit_log__request_metadata__caller_ip:
+      audit_logs.proto_payload__audit_log__request_metadata__caller_ip:
         bg_color: "#FFE663"
         bold: true
     hidden_pivots: {}
@@ -206,7 +206,7 @@
     note_display: hover
     note_text: CSA 5.31
     listen:
-      Date: all_logs.timestamp_date
+      Date: audit_logs.timestamp_date
     row: 23
     col: 0
     width: 24
@@ -214,16 +214,16 @@
   - title: Data Access by Service
     name: Data Access by Service
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_column
-    fields: [all_logs.count_dal_event, all_logs.proto_payload__audit_log__service_name,
-      all_logs.timestamp_date]
-    pivots: [all_logs.proto_payload__audit_log__service_name]
-    fill_fields: [all_logs.timestamp_date]
+    fields: [audit_logs.count_dal_event, audit_logs.proto_payload__audit_log__service_name,
+      audit_logs.timestamp_date]
+    pivots: [audit_logs.proto_payload__audit_log__service_name]
+    fill_fields: [audit_logs.timestamp_date]
     filters:
-      all_logs.is_system_or_service_account: 'No'
-      all_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
-    sorts: [all_logs.proto_payload__audit_log__service_name, all_logs.timestamp_date
+      audit_logs.is_system_or_service_account: 'No'
+      audit_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
+    sorts: [audit_logs.proto_payload__audit_log__service_name, audit_logs.timestamp_date
         desc]
     limit: 500
     column_limit: 50
@@ -270,8 +270,8 @@
     hidden_fields: []
     y_axes: []
     listen:
-      Service(s): all_logs.proto_payload__audit_log__service_name
-      Date: all_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
+      Date: audit_logs.timestamp_date
     row: 2
     col: 0
     width: 13
@@ -300,16 +300,16 @@
   - title: Location of Data Access
     name: Location of Data Access
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_google_map
-    fields: [ip_to_geo_mapping.location, all_logs.count, ip_to_geo_mapping.city_name,
-      ip_to_geo_mapping.country_name, all_logs.proto_payload__audit_log__authentication_info__principal_email]
+    fields: [ip_to_geo_mapping.location, audit_logs.count, ip_to_geo_mapping.city_name,
+      ip_to_geo_mapping.country_name, audit_logs.proto_payload__audit_log__authentication_info__principal_email]
     filters:
-      all_logs.is_audit_log: 'Yes'
-      all_logs.is_system_or_service_account: 'No'
-      all_logs.date_granularity: day
-      all_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
-    sorts: [all_logs.count desc 0]
+      audit_logs.is_audit_log: 'Yes'
+      audit_logs.is_system_or_service_account: 'No'
+      audit_logs.date_granularity: day
+      audit_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
+    sorts: [audit_logs.count desc 0]
     limit: 500
     column_limit: 50
     hidden_fields: []
@@ -354,8 +354,8 @@
     hidden_pivots: {}
     y_axes: []
     listen:
-      Date: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 12
     col: 0
     width: 24
@@ -373,14 +373,14 @@
   - title: Top Data Access Users
     name: Top Data Access Users
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_grid
-    fields: [all_logs.proto_payload__audit_log__authentication_info__principal_email,
-      all_logs.billed_gb]
+    fields: [audit_logs.proto_payload__audit_log__authentication_info__principal_email,
+      audit_logs.billed_gb]
     filters:
-      all_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
-      all_logs.proto_payload__audit_log__service_name_long: bigquery.googleapis.com
-    sorts: [all_logs.billed_gb desc 0]
+      audit_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
+      audit_logs.proto_payload__audit_log__service_name_long: bigquery.googleapis.com
+    sorts: [audit_logs.billed_gb desc 0]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -403,9 +403,9 @@
     show_row_totals: true
     truncate_header: false
     series_labels:
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: Email
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: Email
     series_cell_visualizations:
-      all_logs.billed_gb:
+      audit_logs.billed_gb:
         is_active: true
     conditional_formatting: []
     x_axis_gridlines: false
@@ -442,8 +442,8 @@
     note_display: hover
     note_text: CSA 5.02
     listen:
-      Date: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 30
     col: 0
     width: 5
@@ -451,18 +451,18 @@
   - title: Queries by User per Day
     name: Queries by User per Day
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_area
-    fields: [all_logs.proto_payload__audit_log__authentication_info__principal_email,
-      all_logs.billed_gb, all_logs.timestamp_date]
-    pivots: [all_logs.proto_payload__audit_log__authentication_info__principal_email]
-    fill_fields: [all_logs.timestamp_date]
+    fields: [audit_logs.proto_payload__audit_log__authentication_info__principal_email,
+      audit_logs.billed_gb, audit_logs.timestamp_date]
+    pivots: [audit_logs.proto_payload__audit_log__authentication_info__principal_email]
+    fill_fields: [audit_logs.timestamp_date]
     filters:
-      all_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
-      all_logs.proto_payload__audit_log__service_name_long: bigquery.googleapis.com
-      all_logs.job_config_type: QUERY
-    sorts: [all_logs.proto_payload__audit_log__authentication_info__principal_email
-        desc, all_logs.timestamp_date desc]
+      audit_logs.log_id: '"cloudaudit.googleapis.com/data_access"'
+      audit_logs.proto_payload__audit_log__service_name_long: bigquery.googleapis.com
+      audit_logs.job_config_type: QUERY
+    sorts: [audit_logs.proto_payload__audit_log__authentication_info__principal_email
+        desc, audit_logs.timestamp_date desc]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -497,10 +497,10 @@
       palette_id: 55dee055-18cf-4472-9669-469322a6f264
       options:
         steps: 5
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.billed_gb,
-            id: trelane@google.com - all_logs.billed_gb, name: trelane@google.com},
-          {axisId: all_logs.billed_gb, id: hutz@google.com - all_logs.billed_gb, name: hutz@google.com},
-          {axisId: all_logs.billed_gb, id: cbaer@google.com - all_logs.billed_gb,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.billed_gb,
+            id: trelane@google.com - audit_logs.billed_gb, name: trelane@google.com},
+          {axisId: audit_logs.billed_gb, id: hutz@google.com - audit_logs.billed_gb, name: hutz@google.com},
+          {axisId: audit_logs.billed_gb, id: cbaer@google.com - audit_logs.billed_gb,
             name: cbaer@google.com}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_label: Date
@@ -509,7 +509,7 @@
     series_types: {}
     series_colors: {}
     series_labels:
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: Email
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: Email
     label_color: ["#"]
     ordering: none
     show_null_labels: false
@@ -522,7 +522,7 @@
     truncate_header: false
     size_to_fit: true
     series_cell_visualizations:
-      all_logs.billed_gb:
+      audit_logs.billed_gb:
         is_active: true
     table_theme: white
     enable_conditional_formatting: true
@@ -540,8 +540,8 @@
     note_display: hover
     note_text: CSA 5.03
     listen:
-      Date: all_logs.timestamp_date
-      Service(s): all_logs.proto_payload__audit_log__service_name
+      Date: audit_logs.timestamp_date
+      Service(s): audit_logs.proto_payload__audit_log__service_name
     row: 30
     col: 5
     width: 19
@@ -558,9 +558,9 @@
       display: inline
       options: []
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.timestamp_date
+    field: audit_logs.timestamp_date
   - name: Service(s)
     title: Service(s)
     type: field_filter
@@ -571,6 +571,6 @@
       type: checkboxes
       display: popover
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.proto_payload__audit_log__service_name
+    field: audit_logs.proto_payload__audit_log__service_name

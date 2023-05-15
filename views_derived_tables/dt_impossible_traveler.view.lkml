@@ -1,6 +1,6 @@
   view: impossible_traveler {
     derived_table: {
-      explore_source: all_logs {
+      explore_source: audit_logs {
         column: proto_payload__audit_log__authentication_info__principal_email {}
         column: timestamp_raw {}
         column: timestamp_date {}
@@ -27,11 +27,11 @@
         }
 
         filters: {
-          field: all_logs.timestamp_date
+          field: audit_logs.timestamp_date
           value: "today"
         }
         filters: {
-          field: all_logs.is_system_or_service_account
+          field: audit_logs.is_system_or_service_account
           value: "No"
         }
         # filters: {
@@ -39,7 +39,7 @@
         #   value: "-NULL"
         # }
         filters: {
-          field: all_logs.proto_payload__audit_log__authentication_info__principal_email
+          field: audit_logs.proto_payload__audit_log__authentication_info__principal_email
           value: "-NULL"
         }
 

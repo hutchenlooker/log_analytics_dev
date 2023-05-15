@@ -8,12 +8,12 @@
   - title: IPs Used - Last 30 Days
     name: IPs Used - Last 30 Days
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_grid
-    fields: [all_logs.proto_payload__audit_log__request_metadata__caller_ip, all_logs.min_timestamp,
-      all_logs.max_timestamp, all_logs.count]
+    fields: [audit_logs.proto_payload__audit_log__request_metadata__caller_ip, audit_logs.min_timestamp,
+      audit_logs.max_timestamp, audit_logs.count]
     filters: {}
-    sorts: [all_logs.max_timestamp desc]
+    sorts: [audit_logs.max_timestamp desc]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -36,8 +36,8 @@
     show_row_totals: true
     truncate_header: false
     series_labels:
-      all_logs.min_timestamp: First Used
-      all_logs.max_timestamp: Last Used
+      audit_logs.min_timestamp: First Used
+      audit_logs.max_timestamp: Last Used
     series_cell_visualizations: {}
     conditional_formatting: [{type: along a scale..., value: !!null '', background_color: "#29bff3",
         font_color: !!null '', color_application: {collection_id: create-a-color-collection,
@@ -73,8 +73,8 @@
     hidden_fields: []
     y_axes: []
     listen:
-      Principal Email: all_logs.proto_payload__audit_log__authentication_info__principal_email
-      Date: all_logs.timestamp_date
+      Principal Email: audit_logs.proto_payload__audit_log__authentication_info__principal_email
+      Date: audit_logs.timestamp_date
     row: 2
     col: 7
     width: 17
@@ -82,11 +82,11 @@
   - title: Services Used
     name: Services Used
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_pie
-    fields: [all_logs.proto_payload__audit_log__service_name, all_logs.count]
+    fields: [audit_logs.proto_payload__audit_log__service_name, audit_logs.count]
     filters: {}
-    sorts: [all_logs.count desc 0]
+    sorts: [audit_logs.count desc 0]
     limit: 500
     column_limit: 50
     value_labels: legend
@@ -129,8 +129,8 @@
     hidden_fields: []
     y_axes: []
     listen:
-      Principal Email: all_logs.proto_payload__audit_log__authentication_info__principal_email
-      Date: all_logs.timestamp_date
+      Principal Email: audit_logs.proto_payload__audit_log__authentication_info__principal_email
+      Date: audit_logs.timestamp_date
     row: 2
     col: 0
     width: 7
@@ -138,13 +138,13 @@
   - title: Historical API Usage
     name: Historical API Usage
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_column
-    fields: [all_logs.timestamp_date, all_logs.count, all_logs.method_count]
-    fill_fields: [all_logs.timestamp_date]
+    fields: [audit_logs.timestamp_date, audit_logs.count, audit_logs.method_count]
+    fill_fields: [audit_logs.timestamp_date]
     filters:
-      all_logs.count: NOT NULL
-    sorts: [all_logs.timestamp_date]
+      audit_logs.count: NOT NULL
+    sorts: [audit_logs.timestamp_date]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -179,28 +179,28 @@
       palette_id: 55dee055-18cf-4472-9669-469322a6f264
       options:
         steps: 5
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.count, id: all_logs.count,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.count, id: audit_logs.count,
             name: Event Count}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}, {label: !!null '',
-        orientation: right, series: [{axisId: all_logs.total_methods_used, id: all_logs.total_methods_used,
+        orientation: right, series: [{axisId: audit_logs.total_methods_used, id: audit_logs.total_methods_used,
             name: Total Methods Used}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
-    size_by_field: all_logs.method_count
+    size_by_field: audit_logs.method_count
     x_axis_zoom: true
     y_axis_zoom: true
     series_types:
-      all_logs.total_methods_used: scatter
-      all_logs.method_count: scatter
+      audit_logs.total_methods_used: scatter
+      audit_logs.method_count: scatter
     series_labels:
-      all_logs.method_count: Methods Used
+      audit_logs.method_count: Methods Used
     reference_lines: []
     hidden_pivots: {}
     show_null_points: true
     interpolation: linear
     defaults_version: 1
     listen:
-      Principal Email: all_logs.proto_payload__audit_log__authentication_info__principal_email
-      Date: all_logs.timestamp_date
+      Principal Email: audit_logs.proto_payload__audit_log__authentication_info__principal_email
+      Date: audit_logs.timestamp_date
     row: 12
     col: 10
     width: 14
@@ -208,13 +208,13 @@
   - title: Recent API Usage
     name: Recent API Usage
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: looker_grid
-    fields: [all_logs.timestamp_date, all_logs.proto_payload__audit_log__method_name,
-      all_logs.count]
+    fields: [audit_logs.timestamp_date, audit_logs.proto_payload__audit_log__method_name,
+      audit_logs.count]
     filters:
-      all_logs.timestamp_date: 7 days
-    sorts: [all_logs.count desc]
+      audit_logs.timestamp_date: 7 days
+    sorts: [audit_logs.count desc]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -242,19 +242,19 @@
     show_row_totals: true
     truncate_header: false
     series_labels:
-      all_logs.proto_payload__audit_log__method_name: Method
-      all_logs.proto_payload__audit_log__authentication_info__principal_email: Principal
+      audit_logs.proto_payload__audit_log__method_name: Method
+      audit_logs.proto_payload__audit_log__authentication_info__principal_email: Principal
         Email
-      all_logs.timestamp_date: Date
+      audit_logs.timestamp_date: Date
     series_cell_visualizations:
-      all_logs.count:
+      audit_logs.count:
         is_active: true
     x_axis_gridlines: false
     y_axis_gridlines: false
-    y_axes: [{label: '', orientation: left, series: [{axisId: all_logs.count, id: all_logs.count,
+    y_axes: [{label: '', orientation: left, series: [{axisId: audit_logs.count, id: audit_logs.count,
             name: Event Count}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}, {label: !!null '',
-        orientation: right, series: [{axisId: all_logs.total_methods_used, id: all_logs.total_methods_used,
+        orientation: right, series: [{axisId: audit_logs.total_methods_used, id: audit_logs.total_methods_used,
             name: Total Methods Used}], showLabels: true, showValues: true, unpinAxis: false,
         tickDensity: default, tickDensityCustom: 5, type: linear}]
     show_y_axis_labels: true
@@ -266,7 +266,7 @@
     y_axis_scale_mode: linear
     x_axis_reversed: false
     y_axis_reversed: false
-    size_by_field: all_logs.total_methods_used
+    size_by_field: audit_logs.total_methods_used
     plot_size_by_field: false
     x_axis_zoom: true
     y_axis_zoom: true
@@ -290,13 +290,13 @@
     interpolation: linear
     defaults_version: 1
     series_column_widths:
-      all_logs.timestamp_date: 113
-      all_logs.proto_payload__audit_log__method_name: 452
+      audit_logs.timestamp_date: 113
+      audit_logs.proto_payload__audit_log__method_name: 452
     note_state: collapsed
     note_display: above
     note_text: Last 7 Days
     listen:
-      Principal Email: all_logs.proto_payload__audit_log__authentication_info__principal_email
+      Principal Email: audit_logs.proto_payload__audit_log__authentication_info__principal_email
     row: 12
     col: 0
     width: 10
@@ -314,11 +314,11 @@
   - title: email
     name: email
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     type: single_value
-    fields: [all_logs.proto_payload__audit_log__authentication_info__principal_email]
+    fields: [audit_logs.proto_payload__audit_log__authentication_info__principal_email]
     filters: {}
-    sorts: [all_logs.proto_payload__audit_log__authentication_info__principal_email]
+    sorts: [audit_logs.proto_payload__audit_log__authentication_info__principal_email]
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -360,8 +360,8 @@
     defaults_version: 1
     series_types: {}
     listen:
-      Principal Email: all_logs.proto_payload__audit_log__authentication_info__principal_email
-      Date: all_logs.timestamp_date
+      Principal Email: audit_logs.proto_payload__audit_log__authentication_info__principal_email
+      Date: audit_logs.timestamp_date
     row: 0
     col: 0
     width: 24
@@ -377,9 +377,9 @@
       type: tag_list
       display: popover
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.proto_payload__audit_log__authentication_info__principal_email
+    field: audit_logs.proto_payload__audit_log__authentication_info__principal_email
   - name: Date
     title: Date
     type: field_filter
@@ -391,6 +391,6 @@
       display: inline
       options: []
     model: cloud_logging
-    explore: all_logs
+    explore: audit_logs
     listens_to_filters: []
-    field: all_logs.timestamp_date
+    field: audit_logs.timestamp_date

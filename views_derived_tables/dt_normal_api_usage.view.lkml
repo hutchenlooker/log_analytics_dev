@@ -68,8 +68,8 @@ view: unusual_api_usage {
     label: "Method / API Name"
     description: "Use to look for unusual behavior on specific APIs"
     type: string
-    suggest_explore: all_logs
-    suggest_dimension: all_logs.proto_payload__audit_log__method_name
+    suggest_explore: audit_logs
+    suggest_dimension: audit_logs.proto_payload__audit_log__method_name
 
   }
 
@@ -109,7 +109,7 @@ view: unusual_api_usage {
   measure: total_log_events {
     type: sum
     sql: ${log_events} ;;
-    drill_fields: [all_logs.timestamp_date, all_logs.proto_payload__audit_log__method_name, all_logs.proto_payload__audit_log__authentication_info__principal_email, all_logs.count]
+    drill_fields: [audit_logs.timestamp_date, audit_logs.proto_payload__audit_log__method_name, audit_logs.proto_payload__audit_log__authentication_info__principal_email, audit_logs.count]
   }
 
   dimension: log_actions {
