@@ -168,4 +168,22 @@ explore: network_logs {
       # to reduce inadverent expensive queries, default all explore queries to last 1 day (today)
       filters: [network_logs.timestamp_date: "last 1 days"]
     }
+
+  join: dt_network_ip_stats {
+    view_label: "4) IP Details - Source"
+    sql_on: ${network_logs.src_ip} = ${dt_network_ip_stats.ip} ;;
+    relationship: many_to_one
+  }
+
+  join: ip_details_dest {
+    from: dt_network_ip_stats
+    view_label: "5) IP Details - Dest"
+    sql_on: ${network_logs.dest_ip} = ${ip_details_dest.ip} ;;
+    relationship: many_to_one
+  }
+}
+
+explore: dt_network_ip_stats {
+  label: "Network Logs - IP Details"
+  view_label: "Network Logs - IP Details"
 }
