@@ -5,7 +5,7 @@ view: network_logs {
 
   dimension: protocol {
     type: number
-    view_label: "3) Network Logs"
+
     group_label: "Connection"
     description: "The IANA protocol number"
     sql: JSON_VALUE(json_payload.connection.protocol) ;;
@@ -13,7 +13,7 @@ view: network_logs {
 
   dimension: src_ip {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Connection"
     description: "Source IP address"
     sql: JSON_VALUE(json_payload.connection.src_ip) ;;
@@ -21,7 +21,7 @@ view: network_logs {
 
   dimension: dest_ip {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Connection"
     description: "Destination IP address"
     sql: JSON_VALUE(json_payload.connection.dest_ip) ;;
@@ -29,7 +29,7 @@ view: network_logs {
 
   dimension: src_port {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Connection"
     description: "Source port"
     sql: JSON_VALUE(json_payload.connection.src_port) ;;
@@ -37,7 +37,7 @@ view: network_logs {
 
   dimension: dest_port {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Connection"
     description: "Destination port"
     sql: JSON_VALUE(json_payload.connection.dest_port) ;;
@@ -45,7 +45,7 @@ view: network_logs {
 
   dimension: source_project_id {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Source"
     description: "ID of the project containing the VM"
     sql: JSON_VALUE(json_payload.src_instance.project_id) ;;
@@ -53,7 +53,7 @@ view: network_logs {
 
   dimension: source_region {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Source"
     description: "Region of the VM"
     sql: JSON_VALUE(json_payload.src_instance.region) ;;
@@ -61,7 +61,7 @@ view: network_logs {
 
   dimension: source_vm_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Source"
     description: "Instance name of the VM"
     sql: JSON_VALUE(json_payload.src_instance.vm_name) ;;
@@ -69,7 +69,7 @@ view: network_logs {
 
   dimension: source_zone {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Source"
     description: "Zone of the VM"
     sql: JSON_VALUE(json_payload.src_instance.zone) ;;
@@ -77,7 +77,7 @@ view: network_logs {
 
   dimension: destination_project_id {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Destination"
     description: "ID of the project containing the VM"
     sql: JSON_VALUE(json_payload.dest_instance.project_id) ;;
@@ -85,7 +85,7 @@ view: network_logs {
 
   dimension: destination_region {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Destination"
     description: "Region of the VM"
     sql: JSON_VALUE(json_payload.dest_instance.region) ;;
@@ -93,7 +93,7 @@ view: network_logs {
 
   dimension: destination_vm_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Destination"
     description: "Instance name of the VM"
     sql: JSON_VALUE(json_payload.dest_instance.vm_name) ;;
@@ -101,7 +101,7 @@ view: network_logs {
 
   dimension: destination_zone {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Instance Destination"
     description: "Zone of the VM"
     sql: JSON_VALUE(json_payload.dest_instance.zone) ;;
@@ -109,7 +109,7 @@ view: network_logs {
 
   dimension: source_vpc_project_id {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Source"
     description: "ID of the project containing the VPC"
     sql: JSON_VALUE(json_payload.src_vpc.project_id) ;;
@@ -117,7 +117,7 @@ view: network_logs {
 
   dimension: source_vpc_subnetwork_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Source"
     description: "Subnetwork on which the VM is operating"
     sql: JSON_VALUE(json_payload.src_vpc.subnetwork_name) ;;
@@ -125,7 +125,7 @@ view: network_logs {
 
   dimension: source_vpc_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Source"
     description: "VPC on which the VM is operating"
     sql: JSON_VALUE(json_payload.src_vpc.vpc_name) ;;
@@ -133,7 +133,7 @@ view: network_logs {
 
   dimension: dest_vpc_project_id {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Destination"
     description: "ID of the project containing the VPC"
     sql: JSON_VALUE(json_payload.dest_vpc.project_id) ;;
@@ -141,7 +141,7 @@ view: network_logs {
 
   dimension: dest_vpc_subnetwork_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Destination"
     description: "Subnetwork on which the VM is operating"
     sql: JSON_VALUE(json_payload.dest_vpc.subnetwork_name) ;;
@@ -149,7 +149,7 @@ view: network_logs {
 
   dimension: dest_vpc_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "VPC Destination"
     description: "VPC on which the VM is operating"
     sql: JSON_VALUE(json_payload.dest_vpc.vpc_name) ;;
@@ -157,7 +157,7 @@ view: network_logs {
 
   dimension: asn {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Source"
     description: "The autonomous system number (ASN) of the external network to which this endpoint belongs."
     sql: JSON_VALUE(json_payload.src_location.asn) ;;
@@ -165,7 +165,7 @@ view: network_logs {
 
   dimension: source_city {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Source"
     description: "City for external endpoints"
     sql: JSON_VALUE(json_payload.src_location.city) ;;
@@ -173,7 +173,7 @@ view: network_logs {
 
   dimension: source_continent {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Source"
     description: "Continent for external endpoints"
     sql: JSON_VALUE(json_payload.src_location.continent) ;;
@@ -181,7 +181,7 @@ view: network_logs {
 
   dimension: source_country {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Source"
     description: "Country for external endpoints, represented as ISO 3166-1 Alpha-3 country codes"
     sql: JSON_VALUE(json_payload.src_location.country) ;;
@@ -189,7 +189,7 @@ view: network_logs {
 
   dimension: region {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Source"
     description: "Region for external endpoints"
     sql: JSON_VALUE(json_payload.src_location.region) ;;
@@ -197,7 +197,7 @@ view: network_logs {
 
   dimension: dest_asn {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Destination"
     description: "The autonomous system number (ASN) of the external network to which this endpoint belongs."
     sql: JSON_VALUE(json_payload.dest_location.asn) ;;
@@ -205,7 +205,7 @@ view: network_logs {
 
   dimension: dest_city {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Destination"
     description: "City for external endpoints"
     sql: JSON_VALUE(json_payload.dest_location.city) ;;
@@ -213,7 +213,7 @@ view: network_logs {
 
   dimension: dest_continent {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Destination"
     description: "Continent for external endpoints"
     sql: JSON_VALUE(json_payload.dest_location.continent) ;;
@@ -221,7 +221,7 @@ view: network_logs {
 
   dimension: dest_country {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Destination"
     description: "Country for external endpoints, represented as ISO 3166-1 Alpha-3 country codes"
     sql: JSON_VALUE(json_payload.dest_location.country) ;;
@@ -229,7 +229,7 @@ view: network_logs {
 
   dimension: dest_region {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "Location Destination"
     description: "Region for external endpoints"
     sql: JSON_VALUE(json_payload.dest_location.region) ;;
@@ -237,7 +237,7 @@ view: network_logs {
 
   dimension: dest_cluster_location {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "Location of the cluster. This can be a zone or a region depending if the cluster is zonal or regional."
     sql: JSON_VALUE(json_payload.dest_gke_details.cluster.cluster_location) ;;
@@ -245,7 +245,7 @@ view: network_logs {
 
   dimension: dest_cluster_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "GKE cluster name."
     sql: JSON_VALUE(json_payload.dest_gke_details.cluster.cluster_name) ;;
@@ -253,7 +253,7 @@ view: network_logs {
 
   dimension: dest_pod_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "Name of the Pod"
     sql: JSON_VALUE(json_payload.dest_gke_details.pod.pod_name) ;;
@@ -261,7 +261,7 @@ view: network_logs {
 
   dimension: dest_pod_namespace {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "Namespace of the Pod"
     sql: JSON_VALUE(json_payload.dest_gke_details.pod.pod_namespace) ;;
@@ -269,7 +269,7 @@ view: network_logs {
 
   dimension: dest_service_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "Name of the Service. If there are more than two relevant Services, the field is set to a special MANY_SERVICES marker."
     sql: JSON_VALUE(json_payload.dest_gke_details.service.service_name) ;;
@@ -277,7 +277,7 @@ view: network_logs {
 
   dimension: dest_service_namespace {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Destination"
     description: "Namespace of the Service"
     sql: JSON_VALUE(json_payload.dest_gke_details.service.service_namespace) ;;
@@ -285,7 +285,7 @@ view: network_logs {
 
   dimension: src_cluster_location {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "Location of the cluster. This can be a zone or a region depending if the cluster is zonal or regional."
     sql: JSON_VALUE(json_payload.src_gke_details.cluster.cluster_location) ;;
@@ -293,7 +293,7 @@ view: network_logs {
 
   dimension: src_cluster_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "GKE cluster name."
     sql: JSON_VALUE(json_payload.src_gke_details.cluster.cluster_name) ;;
@@ -301,7 +301,7 @@ view: network_logs {
 
   dimension: src_pod_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "Name of the Pod"
     sql: JSON_VALUE(json_payload.src_gke_details.pod.pod_name) ;;
@@ -309,7 +309,7 @@ view: network_logs {
 
   dimension: src_pod_namespace {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "Namespace of the Pod"
     sql: JSON_VALUE(json_payload.src_gke_details.pod.pod_namespace) ;;
@@ -317,7 +317,7 @@ view: network_logs {
 
   dimension: src_service_name {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "Name of the Service. If there are more than two relevant Services, the field is set to a special MANY_SERVICES marker."
     sql: JSON_VALUE(json_payload.src_gke_details.service.service_name) ;;
@@ -325,7 +325,7 @@ view: network_logs {
 
   dimension: src_service_namespace {
     type: string
-    view_label: "3) Network Logs"
+
     group_label: "GKE Source"
     description: "Namespace of the Service"
     sql: JSON_VALUE(json_payload.src_gke_details.service.service_namespace) ;;
@@ -334,28 +334,28 @@ view: network_logs {
   dimension: reporter {
     type: string
 
-    view_label: "3) Network Logs"
+
     description: "The side which reported the flow. Can be either SRC or DEST."
     sql: JSON_VALUE(json_payload.reporter) ;;
   }
 
   dimension: rtt_msec {
     type: number
-    view_label: "3) Network Logs"
+
     description: "Latency as measured during the time interval, for TCP flows only. The measured latency is the time elapsed between sending a SEQ and receiving a corresponding ACK. The latency result is the sum of the network RTT and any time consumed by the application."
     sql: CAST(JSON_VALUE(json_payload.rtt_msec) AS INT64) ;;
   }
 
   dimension: bytes_sent {
     type: number
-    view_label: "3) Network Logs"
+
     description: "Amount of bytes sent from the source to the destination"
     sql: CAST(JSON_VALUE(json_payload.bytes_sent) AS INT64) ;;
   }
 
   dimension: packets_sent {
     type: number
-    view_label: "3) Network Logs"
+
     description: "Number of packets sent from the source to the destination"
     sql: CAST(JSON_VALUE(json_payload.packets_sent) AS INT64) ;;
   }
@@ -363,7 +363,7 @@ view: network_logs {
   dimension: start_time {
     type: string
 
-    view_label: "3) Network Logs"
+
     description: "Timestamp (RFC 3339 date string format) of the first observed packet during the aggregated time interval."
     sql: JSON_VALUE(json_payload.start_time) ;;
   }
@@ -371,7 +371,7 @@ view: network_logs {
   dimension: end_time {
     type: string
 
-    view_label: "3) Network Logs"
+
     description: "Timestamp (RFC 3339 date string format) of the last observed packet during the aggregated time interval"
     sql: JSON_VALUE(json_payload.end_time) ;;
   }

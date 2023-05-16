@@ -270,8 +270,7 @@ explore: unusual_api_usage {
 #########################################################################################################################################
 
 explore: network_logs {
-  #fields: [network_logs*,]
-
+  view_label: "3) Network Logs"
 
   always_filter: {
     # always filter on VPC flow logs
@@ -297,5 +296,28 @@ explore: network_logs {
 
 explore: dt_network_ip_stats {
   label: "Network Logs - IP Details"
-  view_label: "Network Logs - IP Details"
+  view_label: "1) Network Logs - IP Details"
+  fields:
+  # removing fields from the self-join to `connected_ip_stats` as these would be confusing to have twice.
+    [ALL_FIELDS*,
+    -connected_ip_stats.connected_ips_string,
+    -connected_ip_stats.connected_ips,
+    -connected_ip_stats.flow_count,
+    -connected_ip_stats.inbound_traffic_gb,
+    -connected_ip_stats.outbound_traffic_gb,
+    -connected_ip_stats.total_traffic_gb ]
+
+  join: dt_network_ip_stats__connected_ips {
+    view_label: "1) Network Logs - IP Details"
+    sql: LEFT JOIN UNNEST(${dt_network_ip_stats.connected_ips}) as dt_network_ip_stats__connected_ips ;;
+    relationship: one_to_many
+    }
+
+  join: connected_ip_stats {
+    view_label: "2) Network Logs - Connected IP Details"
+    from: dt_network_ip_stats
+    relationship: many_to_one
+    sql_on: dt_network_ip_stats__connected_ips = ${connected_ip_stats.ip} ;;
+  }
+
 }
