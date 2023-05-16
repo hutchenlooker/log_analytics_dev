@@ -1,8 +1,8 @@
 view: dt_network_ip_stats {
-    derived_table: {
-      # currently not persisted. Need to create with Dataform.
-      # CSA 6.15 https://github.com/GoogleCloudPlatform/security-analytics/blob/main/src/6.15/6.15.md
-      sql: WITH all_ips AS
+  derived_table: {
+    # currently not persisted. Need to create with Dataform.
+    # CSA 6.15 https://github.com/GoogleCloudPlatform/security-analytics/blob/main/src/6.15/6.15.md
+    sql: WITH all_ips AS
         (SELECT *,
           JSON_VALUE(json_payload.reporter) AS reporter,
           IF(JSON_VALUE(json_payload.reporter) = 'SRC', JSON_VALUE(json_payload.connection.src_ip), JSON_VALUE(json_payload.connection.dest_ip)) AS reporter_ip,
@@ -41,109 +41,110 @@ view: dt_network_ip_stats {
       GROUP BY ip
       ORDER BY internal_entity DESC, flow_count DESC
        ;;
-    }
+  }
 
-    measure: ip_count {
-      type: count
-    }
+  measure: ip_count {
+    type: count
+  }
 
-    dimension: ip {
-      label: " IP"
-      primary_key: yes
-      type: string
-      sql: ${TABLE}.ip ;;
-    }
+  dimension: ip {
+    label: " IP"
+    primary_key: yes
+    type: string
+    sql: ${TABLE}.ip ;;
+  }
 
-    dimension: is_internal_entity {
-      description: "Yes/No if IP Address is an Internal IP"
-      type: yesno
-      sql: ${TABLE}.internal_entity ;;
-    }
+  dimension: is_internal_entity {
+    description: "Yes/No if IP Address is an Internal IP"
+    type: yesno
+    sql: ${TABLE}.internal_entity ;;
+  }
 
-    dimension: int_ext {
-      hidden: yes
-      sql: CASE WHEN ${is_internal_entity} THEN 'Internal' ELSE 'External' END ;;
-    }
+  dimension: int_ext {
+    hidden: yes
+    sql: CASE WHEN ${is_internal_entity} THEN 'Internal' ELSE 'External' END ;;
+  }
 
-    dimension_group: ip_first_seen {
-      type: time
-      sql: ${TABLE}.ip_first_seen ;;
-    }
+  dimension_group: ip_first_seen {
+    type: time
+    sql: ${TABLE}.ip_first_seen ;;
+  }
 
-    dimension_group: ip_last_seen {
-      type: time
-      sql: ${TABLE}.ip_last_seen ;;
-    }
+  dimension_group: ip_last_seen {
+    type: time
+    sql: ${TABLE}.ip_last_seen ;;
+  }
 
-    measure: outbound_traffic_gb {
-      group_label: "Traffic (GB)"
-      value_format_name: decimal_2
-      type: sum
-      sql: ${TABLE}.outbound_traffic_gb ;;
-      drill_fields: [ip, vm_names]
-    }
+  measure: outbound_traffic_gb {
+    group_label: "Traffic (GB)"
+    value_format_name: decimal_2
+    type: sum
+    sql: ${TABLE}.outbound_traffic_gb ;;
+    drill_fields: [ip, vm_names]
+  }
 
-    measure: inbound_traffic_gb {
-      group_label: "Traffic (GB)"
-      value_format_name: decimal_2
-      type: sum
-      sql: ${TABLE}.inbound_traffic_gb ;;
-    }
+  measure: inbound_traffic_gb {
+    group_label: "Traffic (GB)"
+    value_format_name: decimal_2
+    type: sum
+    sql: ${TABLE}.inbound_traffic_gb ;;
+  }
 
-    measure: total_traffic_gb {
-      group_label: "Traffic (GB)"
-      description: "Inbound + Outbound Traffic"
-      value_format_name: decimal_2
-      type: number
-      sql: ${inbound_traffic_gb} + ${inbound_traffic_gb} ;;
-      drill_fields: [ip,vm_names,vpc_names,dt_network_ip_stats__connected_ips.connected_ips_int_ext, connected_ip_stats.vm_names, connected_ip_stats.vpc_names, flow_count, inbound_traffic_gb, outbound_traffic_gb]
-    }
+  measure: total_traffic_gb {
+    group_label: "Traffic (GB)"
+    description: "Inbound + Outbound Traffic"
+    value_format_name: decimal_2
+    type: number
+    sql: ${inbound_traffic_gb} + ${inbound_traffic_gb} ;;
+    drill_fields: [ip,vm_names,vpc_names,dt_network_ip_stats__connected_ips.connected_ips_int_ext, connected_ip_stats.vm_names, connected_ip_stats.vpc_names, flow_count, inbound_traffic_gb, outbound_traffic_gb]
+  }
 
-    dimension: vm_names {
-      label: "VM Names"
-      description: "Internal IP associated with this list of VMs"
-      type: string
-      sql: TO_JSON_STRING(${TABLE}.vm_names) ;;
-    }
+  dimension: vm_names {
+    label: "VM Names"
+    description: "Internal IP associated with this list of VMs"
+    type: string
+    sql: TO_JSON_STRING(${TABLE}.vm_names) ;;
+  }
 
-    dimension: vpc_names {
-      label: "VPC Names"
-      description: "Internal IP associated with this list of VPCs"
-      type: string
-      sql: TO_JSON_STRING(${TABLE}.vpc_names) ;;
-    }
+  dimension: vpc_names {
+    label: "VPC Names"
+    description: "Internal IP associated with this list of VPCs"
+    type: string
+    sql: TO_JSON_STRING(${TABLE}.vpc_names) ;;
+  }
 
-    dimension: external_net_asn {
-      label: "External Net ASN"
-      description: "External IP associated with this External ASN"
-      type: string
-      sql: ${TABLE}.external_net_asn ;;
-    }
+  dimension: external_net_asn {
+    label: "External Net ASN"
+    description: "External IP associated with this External ASN"
+    type: string
+    sql: ${TABLE}.external_net_asn ;;
+  }
 
-    dimension: external_net_country {
-      description: "External IP associated with this Country"
-      type: string
-      sql: ${TABLE}.external_net_county ;;
-    }
+  dimension: external_net_country {
+    description: "External IP associated with this Country"
+    type: string
+    sql: ${TABLE}.external_net_county ;;
+  }
 
   dimension: connected_ips {
     hidden: yes
     sql: ${TABLE}.connected_ips ;;
   }
 
-    dimension: connected_ips_string {
-      label: "Connected IPs (as Array)"
-      description: "List of all the IPs each IP connected with"
-      type: string
-      sql: TO_JSON_STRING(${TABLE}.connected_ips) ;;
-    }
-
-    measure: flow_count {
-      type: sum
-      sql: ${TABLE}.flow_count ;;
-    }
-
+  dimension: connected_ips_string {
+    view_label: "2) Connected IPs"
+    label: "Connected IPs (as Array)"
+    description: "List of all the IPs each IP connected with"
+    type: string
+    sql: TO_JSON_STRING(${TABLE}.connected_ips) ;;
   }
+
+  measure: flow_count {
+    type: sum
+    sql: ${TABLE}.flow_count ;;
+  }
+
+}
 
 view: dt_network_ip_stats__connected_ips {
 
@@ -155,7 +156,31 @@ view: dt_network_ip_stats__connected_ips {
 
   dimension: connected_ips_int_ext {
     label: "Connected IPs + Int/Ext indicator"
-    sql: CONCAT(${connected_ips}, ' - ', ${dt_network_ip_stats.int_ext}) ;;
+    sql: CONCAT(${connected_ips}, ' - ', ${connected_ip_stats.int_ext}) ;;
+  }
+
+  measure: connection_count {
+    description: "Number of IPs the IP connected to"
+    type: count_distinct
+    sql: ${TABLE} ;;
+  }
+
+  measure: connection_count_internal {
+    description: "Number of Inernal IPs the IP connected to"
+    type: count_distinct
+    sql: ${TABLE} ;;
+    filters: [
+      connected_ip_stats.is_internal_entity: "Yes"
+    ]
+  }
+
+  measure: connection_count_external {
+    description: "Number of Inernal IPs the IP connected to"
+    type: count_distinct
+    sql: ${TABLE} ;;
+    filters: [
+      connected_ip_stats.is_internal_entity: "No"
+    ]
   }
 
 }
