@@ -296,30 +296,67 @@ explore: network_logs {
 
 explore: dt_network_ip_stats {
   label: "Network Logs - IP Details"
+  description: "Re-structures the data to create a distinct list of IPs, Internal/External indicators, and all of the IPs they've connected to"
   view_label: "1) IPs "
+  # always join the nested Array. Without this Looker doesn't see it and can't join it to 1st degree
+  always_join: [dt_network_ip_stats__connected_ips]
   fields:
   # removing fields from the self-join to `connected_ip_stats` as these would be confusing to have twice.
+  # also removing dt_network_ip_stats.connected_ips_int_ext as this should only be used after the self-join is applied
     [ALL_FIELDS*,
-    -connected_ip_stats.ip,
-    -connected_ip_stats.connected_ips_string,
-    -connected_ip_stats.connected_ips,
-    -connected_ip_stats.flow_count,
-    -connected_ip_stats.inbound_traffic_gb,
-    -connected_ip_stats.outbound_traffic_gb,
-    -connected_ip_stats.total_traffic_gb,
-    -connected_ip_stats.ip_count]
+    -dt_network_ip_stats.connected_ips_int_ext,
+    -connected_ip_stats_1st_degree.ip,
+    -connected_ip_stats_1st_degree.connected_ips_string,
+    -connected_ip_stats_1st_degree.connected_ips,
+    -connected_ip_stats_1st_degree.flow_count,
+    -connected_ip_stats_1st_degree.inbound_traffic_gb,
+    -connected_ip_stats_1st_degree.outbound_traffic_gb,
+    -connected_ip_stats_1st_degree.total_traffic_gb,
+    -connected_ip_stats_1st_degree.ip_count]
 
   join: dt_network_ip_stats__connected_ips {
-    view_label: "2) Connected IPs"
+    # unnests the Connected IPs Array into Rows
+    view_label: "2) Connected IPs (1st Degree)"
     sql: LEFT JOIN UNNEST(${dt_network_ip_stats.connected_ips}) as dt_network_ip_stats__connected_ips ;;
     relationship: one_to_many
     }
 
-  join: connected_ip_stats {
-    view_label: "2) Connected IPs"
+  join: connected_ip_stats_1st_degree {
     from: dt_network_ip_stats
+    # self-join to report on stats about the 1st degree of Connected IPs, like if they are Internal or not.
+    view_label: "2) Connected IPs (1st Degree)"
     relationship: many_to_one
-    sql_on: dt_network_ip_stats__connected_ips = ${connected_ip_stats.ip} ;;
+    sql_on: dt_network_ip_stats__connected_ips = ${connected_ip_stats_1st_degree.ip} ;;
+  }
+
+  join: dt_network_ip_stats__connected_ips_2nd {
+    from: dt_network_ip_stats__connected_ips
+    # unnests the Connected IPs Array into Rows again to show 2nd degree relationships.
+    view_label: "3) Connected IPs (2nd Degree)"
+    sql: LEFT JOIN UNNEST(${connected_ip_stats_1st_degree.connected_ips}) as dt_network_ip_stats__connected_ips_2nd ;;
+    relationship: one_to_many
+  }
+
+  # join: connected_ip_stats_2nd_degree {
+  #   # self-join to report on stats about the 2nd degree of Connected IPs
+  #   view_label: "3) Connected IPs (2nd Degree)"
+  #   from: dt_network_ip_stats
+  #   relationship: many_to_one
+  #   sql_on: ${connected_ip_stats_1st_degree.ip} = ${connected_ip_stats_2nd_degree.ip} ;;
+  #}
+
+  join: dt_network_ip_stats__vm_names {
+    # unnests the VM Names Array into Rows
+    view_label: "1) IPs "
+    sql: LEFT JOIN UNNEST(${dt_network_ip_stats.vm_names}) as dt_network_ip_stats__vm_names ;;
+    relationship: one_to_many
+  }
+
+  join: dt_network_ip_stats__vpc_names {
+    # unnests the VPC Names Array into Rows
+    view_label: "1) IPs "
+    sql: LEFT JOIN UNNEST(${dt_network_ip_stats.vpc_names}) as dt_network_ip_stats__vpc_names ;;
+    relationship: one_to_many
   }
 
 }

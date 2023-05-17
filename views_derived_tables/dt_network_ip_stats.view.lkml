@@ -54,14 +54,18 @@ view: dt_network_ip_stats {
     sql: ${TABLE}.ip ;;
   }
 
+  dimension: ip_int_ext {
+    label: " IP (with Int/Ext indicator)"
+    sql: CONCAT(${ip}, ' - ', ${internal_external}) ;;
+  }
+
   dimension: is_internal_entity {
     description: "Yes/No if IP Address is an Internal IP"
     type: yesno
     sql: ${TABLE}.internal_entity ;;
   }
 
-  dimension: int_ext {
-    hidden: yes
+  dimension: internal_external {
     sql: CASE WHEN ${is_internal_entity} THEN 'Internal' ELSE 'External' END ;;
   }
 
@@ -100,13 +104,23 @@ view: dt_network_ip_stats {
   }
 
   dimension: vm_names {
-    label: "VM Names"
+    hidden: yes
+    sql: ${TABLE}.vm_names ;;
+  }
+
+  dimension: vm_names_string {
+    label: "VM Names (as Array)"
     description: "Internal IP associated with this list of VMs"
     type: string
     sql: TO_JSON_STRING(${TABLE}.vm_names) ;;
   }
 
   dimension: vpc_names {
+    hidden: yes
+    sql: ${TABLE}.vpc_names ;;
+  }
+
+  dimension: vpc_names_string {
     label: "VPC Names"
     description: "Internal IP associated with this list of VPCs"
     type: string
@@ -132,11 +146,18 @@ view: dt_network_ip_stats {
   }
 
   dimension: connected_ips_string {
-    view_label: "2) Connected IPs"
+    view_label: "2) Connected IPs (1st Degree)"
     label: "Connected IPs (as Array)"
     description: "List of all the IPs each IP connected with"
     type: string
     sql: TO_JSON_STRING(${TABLE}.connected_ips) ;;
+  }
+
+  dimension: connected_ips_int_ext {
+    #this dimension is used after the self-join of the connected ips back to the table
+    # so the ${ip} refers to the connected ip after the join
+    label: "Connected IPs + Int/Ext indicator"
+    sql: CONCAT(${ip}, ' - ', ${internal_external}) ;;
   }
 
   measure: flow_count {
@@ -149,14 +170,10 @@ view: dt_network_ip_stats {
 view: dt_network_ip_stats__connected_ips {
 
   dimension: connected_ips {
+    primary_key: yes
     label: "Connected IPs (as Rows)"
     type: string
     sql: ${TABLE} ;;
-  }
-
-  dimension: connected_ips_int_ext {
-    label: "Connected IPs + Int/Ext indicator"
-    sql: CONCAT(${connected_ips}, ' - ', ${connected_ip_stats.int_ext}) ;;
   }
 
   measure: connection_count {
@@ -170,7 +187,7 @@ view: dt_network_ip_stats__connected_ips {
     type: count_distinct
     sql: ${TABLE} ;;
     filters: [
-      connected_ip_stats.is_internal_entity: "Yes"
+      connected_ip_stats_1st_degree.is_internal_entity: "Yes"
     ]
   }
 
@@ -179,8 +196,29 @@ view: dt_network_ip_stats__connected_ips {
     type: count_distinct
     sql: ${TABLE} ;;
     filters: [
-      connected_ip_stats.is_internal_entity: "No"
+      connected_ip_stats_1st_degree.is_internal_entity: "No"
     ]
+  }
+
+}
+
+
+view: dt_network_ip_stats__vm_names {
+
+  dimension: vm_names {
+    label: "VM Names (as Rows)"
+    type: string
+    sql: ${TABLE} ;;
+  }
+
+  }
+
+view: dt_network_ip_stats__vpc_names {
+
+  dimension: vpc_names {
+    label: "VPC Names (as Rows)"
+    type: string
+    sql: ${TABLE} ;;
   }
 
 }
