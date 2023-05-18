@@ -100,7 +100,7 @@ view: dt_network_ip_stats {
     value_format_name: decimal_2
     type: number
     sql: ${inbound_traffic_gb} + ${inbound_traffic_gb} ;;
-    drill_fields: [ip,vm_names,vpc_names,dt_network_ip_stats__connected_ips.connected_ips_int_ext, connected_ip_stats.vm_names, connected_ip_stats.vpc_names, flow_count, inbound_traffic_gb, outbound_traffic_gb]
+    drill_fields: [ip,dt_network_ip_stats__vm_names.vm_names,dt_network_ip_stats__vpc_names.vpc_names,connected_ip_stats_1st_degree.connected_ips_int_ext, flow_count, inbound_traffic_gb, outbound_traffic_gb]
   }
 
   dimension: vm_names {
@@ -174,16 +174,22 @@ view: dt_network_ip_stats__connected_ips {
     label: "Connected IPs (as Rows)"
     type: string
     sql: ${TABLE} ;;
+    link: {
+      label: "Lookup in IP Monitoring Dashboard"
+      url: "/dashboards/cloud_logging::network_ip_address_monitoring?+IP={{ value }}"
+    }
   }
 
   measure: connection_count {
     description: "Number of IPs the IP connected to"
+    #view_label: "1) IPs "
     type: count_distinct
     sql: ${TABLE} ;;
   }
 
   measure: connection_count_internal {
     description: "Number of Inernal IPs the IP connected to"
+    #view_label: "1) IPs "
     type: count_distinct
     sql: ${TABLE} ;;
     filters: [
@@ -193,6 +199,7 @@ view: dt_network_ip_stats__connected_ips {
 
   measure: connection_count_external {
     description: "Number of Inernal IPs the IP connected to"
+    #view_label: "1) IPs "
     type: count_distinct
     sql: ${TABLE} ;;
     filters: [

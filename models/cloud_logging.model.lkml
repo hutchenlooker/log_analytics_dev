@@ -296,7 +296,7 @@ explore: network_logs {
 
 explore: dt_network_ip_stats {
   label: "Network Logs - IP Details"
-  description: "Re-structures the data to create a distinct list of IPs, Internal/External indicators, and all of the IPs they've connected to"
+  description: "Re-structures the data to create a distinct list of IPs, Internal/External indicators, and all of the IPs they've connected to (1st & 2nd degree)"
   view_label: "1) IPs "
   # always join the nested Array. Without this Looker doesn't see it and can't join it to 1st degree
   always_join: [dt_network_ip_stats__connected_ips]
