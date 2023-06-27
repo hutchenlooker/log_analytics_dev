@@ -3,6 +3,9 @@ include: "/views/all_logs.view"
 view: network_logs {
   extends: [all_logs]
 
+
+################## Main Fields #############################################################
+
   dimension: protocol {
     type: number
 
@@ -51,7 +54,7 @@ view: network_logs {
     sql: JSON_VALUE(json_payload.src_instance.project_id) ;;
   }
 
-  dimension: source_region {
+  dimension: source_vm_region {
     type: string
 
     group_label: "Instance Source"
@@ -83,7 +86,7 @@ view: network_logs {
     sql: JSON_VALUE(json_payload.dest_instance.project_id) ;;
   }
 
-  dimension: destination_region {
+  dimension: destination_vm_region {
     type: string
 
     group_label: "Instance Destination"
@@ -187,7 +190,7 @@ view: network_logs {
     sql: JSON_VALUE(json_payload.src_location.country) ;;
   }
 
-  dimension: region {
+  dimension: source_geo_region {
     type: string
 
     group_label: "Location Source"
@@ -227,7 +230,7 @@ view: network_logs {
     sql: JSON_VALUE(json_payload.dest_location.country) ;;
   }
 
-  dimension: dest_region {
+  dimension: dest_geo_region {
     type: string
 
     group_label: "Location Destination"
@@ -470,5 +473,271 @@ view: network_logs {
     sql:  stddev(${rtt_msec}) ;;
     value_format_name: decimal_0
   }
+
+
+  ################## Network Pulse Selector parameters #############################################################
+
+  parameter: breakdown_selector_src {
+    # hidden: yes
+    description: "Use to make visualizations with dynamic date granulairty"
+    type: unquoted
+    default_value: "hour"
+    allowed_value: {
+      label: "Port"
+      value: "port"
+    }
+    allowed_value: {
+      label: "IP"
+      value: "ip"
+    }
+    allowed_value: {
+      label: "GCE instance"
+      value: "gce_instance"
+    }
+    allowed_value: {
+      label: "GCE instance project"
+      value: "gce_instance_project"
+    }
+    allowed_value: {
+      label: "VPC network"
+      value: "vpc_network"
+    }
+    allowed_value: {
+      label: "VPC network project"
+      value: "vpc_network_project"
+    }
+    allowed_value: {
+      label: "VPC subnetwork"
+      value: "vpc_subnetwork"
+    }
+    allowed_value: {
+      label: "GCP region"
+      value: "gcp_region"
+    }
+    allowed_value: {
+      label: "GCP zone"
+      value: "gcp_zone"
+    }
+    allowed_value: {
+      label: "GKE cluster"
+      value: "gke_cluster"
+    }
+    allowed_value: {
+      label: "GKE pod"
+      value: "gke_pod"
+    }
+    allowed_value: {
+      label: "GKE pod namespace"
+      value: "gke_pod_namespace"
+    }
+    allowed_value: {
+      label: "GKE service"
+      value: "gke_service"
+    }
+    allowed_value: {
+      label: "GKE service namespace"
+      value: "gke_service_namespace"
+    }
+    allowed_value: {
+      label: "Continent"
+      value: "continent"
+    }
+    allowed_value: {
+      label: "Country"
+      value: "country"
+    }
+    allowed_value: {
+      label: "Geographical region"
+      value: "geographical_region"
+    }
+    allowed_value: {
+      label: "City"
+      value: "city"
+    }
+    allowed_value: {
+      label: "ASN"
+      value: "asn"
+    }
+  }
+
+  dimension: breakdown_dimension_src {
+    label_from_parameter: breakdown_selector_src
+    # hidden: yes
+    description: "For use with the 'Date Granularity' filter"
+    sql:
+    {% if breakdown_selector_src._parameter_value == 'port' %}
+      ${src_port}
+     {% elsif breakdown_selector_src._parameter_value == 'ip' %}
+      ${src_ip}
+     {% elsif breakdown_selector_src._parameter_value == 'gce_instance' %}
+      ${source_vm_name}
+     {% elsif breakdown_selector_src._parameter_value == 'gce_instance_project' %}
+      ${source_project_id}
+     {% elsif breakdown_selector_src._parameter_value == 'vpc_network' %}
+      ${source_vpc_name}
+     {% elsif breakdown_selector_src._parameter_value == 'vpc_network_project' %}
+      ${source_vpc_project_id}
+      {% elsif breakdown_selector_src._parameter_value == 'vpc_subnetwork' %}
+      ${source_vpc_subnetwork_name}
+      {% elsif breakdown_selector_src._parameter_value == 'gcp_region' %}
+      ${source_vm_region}
+      {% elsif breakdown_selector_src._parameter_value == 'gcp_zone' %}
+      ${source_zone}
+       {% elsif breakdown_selector_src._parameter_value == 'gke_cluster' %}
+      ${src_cluster_name}
+      {% elsif breakdown_selector_src._parameter_value == 'gke_pod' %}
+      ${src_pod_name}
+      {% elsif breakdown_selector_src._parameter_value == 'gke_pod_namespace' %}
+      ${src_pod_namespace}
+       {% elsif breakdown_selector_src._parameter_value == 'gke_service' %}
+      ${src_service_name}
+       {% elsif breakdown_selector_src._parameter_value == 'gke_service_namespace' %}
+      ${src_service_namespace}
+         {% elsif breakdown_selector_src._parameter_value == 'continent' %}
+      ${source_continent}
+         {% elsif breakdown_selector_src._parameter_value == 'country' %}
+      ${source_country}
+       {% elsif breakdown_selector_src._parameter_value == 'geographical_region' %}
+      ${source_geo_region}
+         {% elsif breakdown_selector_src._parameter_value == 'city' %}
+      ${source_city}
+        {% elsif breakdown_selector_src._parameter_value == 'asn' %}
+      ${asn}
+    {% else %}
+      ${src_ip}
+    {% endif %};;
+  }
+
+  parameter: breakdown_selector_dest {
+    # hidden: yes
+    description: "Use to make visualizations with dynamic dimensions"
+    type: unquoted
+    default_value: "hour"
+    allowed_value: {
+      label: "Port"
+      value: "port"
+    }
+    allowed_value: {
+      label: "IP"
+      value: "ip"
+    }
+    allowed_value: {
+      label: "GCE instance"
+      value: "gce_instance"
+    }
+    allowed_value: {
+      label: "GCE instance project"
+      value: "gce_instance_project"
+    }
+    allowed_value: {
+      label: "VPC network"
+      value: "vpc_network"
+    }
+    allowed_value: {
+      label: "VPC network project"
+      value: "vpc_network_project"
+    }
+    allowed_value: {
+      label: "VPC subnetwork"
+      value: "vpc_subnetwork"
+    }
+    allowed_value: {
+      label: "GCP region"
+      value: "gcp_region"
+    }
+    allowed_value: {
+      label: "GCP zone"
+      value: "gcp_zone"
+    }
+    allowed_value: {
+      label: "GKE cluster"
+      value: "gke_cluster"
+    }
+    allowed_value: {
+      label: "GKE pod"
+      value: "gke_pod"
+    }
+    allowed_value: {
+      label: "GKE pod namespace"
+      value: "gke_pod_namespace"
+    }
+    allowed_value: {
+      label: "GKE service"
+      value: "gke_service"
+    }
+    allowed_value: {
+      label: "GKE service namespace"
+      value: "gke_service_namespace"
+    }
+    allowed_value: {
+      label: "Continent"
+      value: "continent"
+    }
+    allowed_value: {
+      label: "Country"
+      value: "country"
+    }
+    allowed_value: {
+      label: "Geographical region"
+      value: "geographical_region"
+    }
+    allowed_value: {
+      label: "City"
+      value: "city"
+    }
+    allowed_value: {
+      label: "ASN"
+      value: "asn"
+    }
+  }
+
+  dimension: breakdown_dimension_dest {
+    label_from_parameter: breakdown_selector_dest
+    # hidden: yes
+    description: "For use with the 'Date Granularity' filter"
+    sql:
+    {% if breakdown_selector_dest._parameter_value == 'port' %}
+      ${dest_port}
+     {% elsif breakdown_selector_dest._parameter_value == 'ip' %}
+      ${dest_ip}
+     {% elsif breakdown_selector_dest._parameter_value == 'gce_instance' %}
+      ${destination_vm_name}
+     {% elsif breakdown_selector_dest._parameter_value == 'gce_instance_project' %}
+      ${destination_project_id}
+     {% elsif breakdown_selector_dest._parameter_value == 'vpc_network' %}
+      ${dest_vpc_name}
+     {% elsif breakdown_selector_dest._parameter_value == 'vpc_network_project' %}
+      ${dest_vpc_project_id}
+      {% elsif breakdown_selector_dest._parameter_value == 'vpc_subnetwork' %}
+      ${dest_vpc_subnetwork_name}
+      {% elsif breakdown_selector_dest._parameter_value == 'gcp_region' %}
+      ${destination_vm_region}
+      {% elsif breakdown_selector_dest._parameter_value == 'gcp_zone' %}
+      ${destination_zone}
+       {% elsif breakdown_selector_dest._parameter_value == 'gke_cluster' %}
+      ${dest_cluster_name}
+      {% elsif breakdown_selector_dest._parameter_value == 'gke_pod' %}
+      ${dest_pod_name}
+      {% elsif breakdown_selector_dest._parameter_value == 'gke_pod_namespace' %}
+      ${dest_pod_namespace}
+       {% elsif breakdown_selector_dest._parameter_value == 'gke_service' %}
+      ${dest_service_name}
+       {% elsif breakdown_selector_dest._parameter_value == 'gke_service_namespace' %}
+      ${dest_service_namespace}
+         {% elsif breakdown_selector_dest._parameter_value == 'continent' %}
+      ${dest_continent}
+         {% elsif breakdown_selector_dest._parameter_value == 'country' %}
+      ${dest_country}
+       {% elsif breakdown_selector_dest._parameter_value == 'geographical_region' %}
+      ${dest_geo_region}
+         {% elsif breakdown_selector_dest._parameter_value == 'city' %}
+      ${dest_city}
+        {% elsif breakdown_selector_dest._parameter_value == 'asn' %}
+      ${asn}
+    {% else %}
+      ${dest_ip}
+    {% endif %};;
+  }
+
 
 }

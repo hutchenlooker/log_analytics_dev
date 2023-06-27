@@ -59,6 +59,10 @@ view: dt_network_ip_stats {
     sql: CONCAT(${ip}, ' - ', ${internal_external}) ;;
   }
 
+
+# <p style="color: black; font-size:100%; text-align:left">{{ ip._value }}</p>
+#             <p style="color: black; background-color: red; font-size:100%; text-align:left">{{ internal_external._value }}</p>
+
   dimension: is_internal_entity {
     description: "Yes/No if IP Address is an Internal IP"
     type: yesno
@@ -158,6 +162,16 @@ view: dt_network_ip_stats {
     # so the ${ip} refers to the connected ip after the join
     label: "Connected IPs + Int/Ext indicator"
     sql: CONCAT(${ip}, ' - ', ${internal_external}) ;;
+    # highlight External IPs in Red
+    html:   {% if connected_ip_stats_1st_degree.internal_external._value == 'External' %}
+    <a style="color: red; font-size:100%; font-weight:bold; text-align:left">{{ value }}</a>
+    {% else %}
+    {{ rendered_value }}
+    {% endif %};;
+    link: {
+      label: "Lookup in IP Monitoring Dashboard"
+      url: "/dashboards/cloud_logging::network_ip_address_monitoring?+IP={{ connected_ip_stats_1st_degree.ip._value }}"
+    }
   }
 
   measure: flow_count {

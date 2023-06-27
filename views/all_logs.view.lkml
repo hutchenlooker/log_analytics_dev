@@ -2,6 +2,8 @@ view: all_logs {
   # DATASET_ID and LOG_TABLE_NAME are constants set in the manifest file
   sql_table_name: `@{PROJECT_ID}.@{DATASET_ID}.@{LOG_TABLE_NAME}` ;;
 
+  # This view contains all of the common fields in the AllLogs table. Fields that are used across Audit, Network, and Application logs.
+
   # parameters
 
   parameter: search_filter {
