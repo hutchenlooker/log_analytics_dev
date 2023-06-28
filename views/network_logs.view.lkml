@@ -404,6 +404,11 @@ view: network_logs {
 
   # Measures
 
+  measure: total_bytes_sent {
+    type: sum
+    sql: ${bytes_sent} ;;
+    group_label: "Bytes"
+  }
 
   measure: total_bytes_sent_from_source {
     type: sum
@@ -432,27 +437,27 @@ view: network_logs {
     group_item_label: "Total Ingressed"
   }
 
-  measure: total_gibbytes_sent_from_source {
+  measure: total_gigabytes_sent_from_source {
     type: number
     sql: ${total_bytes_sent_from_source} / (1024^3) ;;
     value_format_name: decimal_0
-    group_label: "Gibibytes"
+    group_label: "Gigabytes"
     group_item_label: "Total Sent From Source"
   }
 
-  measure: total_gibbytes_egressed {
+  measure: total_gigabytes_egressed {
     type: number
     sql: ${total_bytes_egressed} / (1024^3) ;;
     value_format_name: decimal_0
-    group_label: "Gibibytes"
+    group_label: "Gigabytes"
     group_item_label: "Total Egressed"
   }
 
-  measure: total_gibbytes_ingressed {
+  measure: total_gigabytes_ingressed {
     type: number
     sql: ${total_bytes_ingressed} / (1024^3) ;;
     value_format_name: decimal_0
-    group_label: "Gibibytes"
+    group_label: "Gigabytes"
     group_item_label: "Total Ingressed"
   }
 
@@ -737,6 +742,10 @@ view: network_logs {
     {% else %}
       ${dest_ip}
     {% endif %};;
+  }
+
+  dimension: breakdown_dimension_src_dest {
+    sql: CONCAT(${breakdown_dimension_src}, ' - ', ${breakdown_dimension_dest}) ;;
   }
 
 

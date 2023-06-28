@@ -292,6 +292,13 @@ explore: network_logs {
     sql_on: ${network_logs.dest_ip} = ${ip_details_dest.ip} ;;
     relationship: many_to_one
   }
+
+  join: dt_network_logs_top_n {
+    view_label: "3) Network Logs - Top N Src/Dest"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${dt_network_logs_top_n.breakdown_dimension_src_dest} = ${network_logs.breakdown_dimension_src_dest} ;;
+  }
 }
 
 explore: dt_network_ip_stats {
