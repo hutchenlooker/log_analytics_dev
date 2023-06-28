@@ -125,6 +125,7 @@ view: all_logs {
       raw,
       time,
       millisecond,
+      second,
       minute,
       minute10,
       minute15,

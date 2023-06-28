@@ -3,6 +3,8 @@ view: dt_network_logs_top_n {
       explore_source: network_logs {
         bind_all_filters: yes
         column: total_bytes_sent {}
+        column: breakdown_dimension_src {}
+        column: breakdown_dimension_dest {}
         column: breakdown_dimension_src_dest {}
         derived_column: ranking {
           sql: rank() over (order by total_bytes_sent desc);;
@@ -15,6 +17,14 @@ view: dt_network_logs_top_n {
       hidden: yes
       primary_key: yes
     }
+
+  dimension: breakdown_dimension_src {
+    hidden: yes
+  }
+
+  dimension: breakdown_dimension_dest {
+    hidden: yes
+  }
 
     dimension: ranking {
       type: number
@@ -45,13 +55,38 @@ view: dt_network_logs_top_n {
     }
 
 
-  dimension: top_src_dest {
+  dimension: top_src_dest_combined {
+    description: "Both Src and Dest. Use for pivots"
     label: "Src / Dest (Top {% if top_rank_limit._is_filtered %}{% parameter top_rank_limit %}{% else %}N{% endif %})"
     order_by_field: top_src_dest_rank
     type: string
     sql:
       CASE
         WHEN ${ranking}<={% parameter top_rank_limit %} THEN ${breakdown_dimension_src_dest}
+        ELSE 'Rest of Traffic'
+      END
+    ;;
+  }
+
+  dimension: top_src {
+    label: "Source {% parameter network_logs.breakdown_selector_src %} (Top {% if top_rank_limit._is_filtered %}{% parameter top_rank_limit %}{% else %}N{% endif %})"
+    order_by_field: top_src_dest_rank
+    type: string
+    sql:
+      CASE
+        WHEN ${ranking}<={% parameter top_rank_limit %} THEN ${breakdown_dimension_src}
+        ELSE 'Rest of Traffic'
+      END
+    ;;
+  }
+
+  dimension: top_dest {
+    label: "Destination {% parameter network_logs.breakdown_selector_dest %} (Top {% if top_rank_limit._is_filtered %}{% parameter top_rank_limit %}{% else %}N{% endif %})"
+    order_by_field: top_src_dest_rank
+    type: string
+    sql:
+      CASE
+        WHEN ${ranking}<={% parameter top_rank_limit %} THEN ${breakdown_dimension_dest}
         ELSE 'Rest of Traffic'
       END
     ;;
