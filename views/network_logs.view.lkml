@@ -499,6 +499,7 @@ view: network_logs {
   }
 
   measure: total_bytes_sent_per_second {
+    description: "Note: must use with parameter `Select Bytes per Sec Timeframe`. Choose same Timeframe that you are either reporting on or filtering on"
     type: sum
     value_format_name: decimal_2
     #value_format: "[>=1000000]$0.00,,\"M\";[>=1000]0.00,\"K\";$0.00"
