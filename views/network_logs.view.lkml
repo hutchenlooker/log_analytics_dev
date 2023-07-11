@@ -404,67 +404,92 @@ view: network_logs {
 
   # Measures
 
-  dimension: second_count {
-    description: "For use with 'per second' calculations. Calculates the number of seconds in each timeframe"
-    # warning: this may not account for every possible timeframe.
-    # warning: if you don't filter by a "complete" time period, the current time period may be in accurate.
-    #          for example, a query at the hour-level filtered on the last three hours at 3:03PM with only show 3 minutes in the current hour, which will skew results
-    # hidden: yes
-    type: number
-    sql:
-        {% if timestamp_time._is_selected %}
-          1
-        {% elsif timestamp_second._is_selected %}
-          1
-        {% elsif timestamp_minute._is_selected %}
-          60
-        {% elsif timestamp_minute10._is_selected %}
-          600
-        {% elsif timestamp_minute15._is_selected %}
-          900
-        {% elsif timestamp_minute30._is_selected %}
-          1800
-        {% elsif timestamp_hour_of_day._is_selected %}
-          3600
-        {% elsif timestamp_hour._is_selected %}
-          3600
-        {% elsif timestamp_hour6._is_selected %}
-          21600
-        {% elsif timestamp_hour12._is_selected %}
-          43200
-        {% elsif timestamp_date._is_selected %}
-          86400
-        {% elsif timestamp_week._is_selected %}
-          604800
-        {% elsif timestamp_time._is_filtered %}
-          1
-        {% elsif timestamp_second._is_filtered %}
-          1
-        {% elsif timestamp_minute._is_filtered %}
-          60
-        {% elsif timestamp_minute10._is_selected %}
-          600
-        {% elsif timestamp_minute15._is_selected %}
-          900
-        {% elsif timestamp_minute30._is_selected %}
-          1800
-        {% elsif timestamp_hour_of_day._is_selected %}
-          3600
-        {% elsif timestamp_hour._is_selected %}
-          3600
-        {% elsif timestamp_hour6._is_selected %}
-          21600
-        {% elsif timestamp_hour12._is_selected %}
-          43200
-        {% elsif timestamp_date._is_filtered %}
-          86400
-        {% elsif timestamp_week._is_selected %}
-          604800
-        {% else %}
-          1
-        {% endif %}
+  # dimension: second_count {
+  #   # one attempt to make the second count dynamic, but has limitations.
+  #   description: "For use with 'per second' calculations. Calculates the number of seconds in each timeframe"
+  #   # warning: this may not account for every possible timeframe.
+  #   # warning: if you don't filter by a "complete" time period, the current time period may be in accurate.
+  #   #          for example, a query at the hour-level filtered on the last three hours at 3:03PM with only show 3 minutes in the current hour, which will skew results
+  #   # hidden: yes
+  #   type: number
+  #   sql:
+  #       {% if timestamp_time._is_selected %}
+  #         1
+  #       {% elsif timestamp_second._is_selected %}
+  #         1
+  #       {% elsif timestamp_minute._is_selected %}
+  #         60
+  #       {% elsif timestamp_minute10._is_selected %}
+  #         600
+  #       {% elsif timestamp_minute15._is_selected %}
+  #         900
+  #       {% elsif timestamp_minute30._is_selected %}
+  #         1800
+  #       {% elsif timestamp_hour_of_day._is_selected %}
+  #         3600
+  #       {% elsif timestamp_hour._is_selected %}
+  #         3600
+  #       {% elsif timestamp_hour6._is_selected %}
+  #         21600
+  #       {% elsif timestamp_hour12._is_selected %}
+  #         43200
+  #       {% elsif timestamp_date._is_selected %}
+  #         86400
+  #       {% elsif timestamp_week._is_selected %}
+  #         604800
+  #       {% elsif timestamp_time._is_filtered %}
+  #         1
+  #       {% elsif timestamp_second._is_filtered %}
+  #         1
+  #       {% elsif timestamp_minute._is_filtered %}
+  #         60
+  #       {% elsif timestamp_minute10._is_selected %}
+  #         600
+  #       {% elsif timestamp_minute15._is_selected %}
+  #         900
+  #       {% elsif timestamp_minute30._is_selected %}
+  #         1800
+  #       {% elsif timestamp_hour_of_day._is_selected %}
+  #         3600
+  #       {% elsif timestamp_hour._is_selected %}
+  #         3600
+  #       {% elsif timestamp_hour6._is_selected %}
+  #         21600
+  #       {% elsif timestamp_hour12._is_selected %}
+  #         43200
+  #       {% elsif timestamp_date._is_filtered %}
+  #         86400
+  #       {% elsif timestamp_week._is_selected %}
+  #         604800
+  #       {% else %}
+  #         1
+  #       {% endif %}   ;;
+  # }
 
-    ;;
+  parameter: select_bytes_per_sec_timeframe {
+    description: "Use with Bytes per Second measure to define which timeframe you want to use to calculate 'Bytes per Second'. For example, choosing 'Minutes' with divide by 60"
+    type: number
+    allowed_value: {
+      label: "Seconds"
+      value: "1"
+    }
+    allowed_value: {
+      label: "Minutes"
+      value: "60"
+    }
+    allowed_value: {
+      label: "10 Minutes"
+      value: "600"
+    }
+    allowed_value: {
+      label: "Hours"
+      value: "3600"
+    }
+    allowed_value: {
+      label: "Days"
+      value: "86400"
+    }
+    default_value: "1"
   }
 
   measure: total_bytes_sent {
@@ -477,7 +502,7 @@ view: network_logs {
     type: sum
     value_format_name: decimal_2
     #value_format: "[>=1000000]$0.00,,\"M\";[>=1000]0.00,\"K\";$0.00"
-    sql: ${bytes_sent} / ${second_count} ;;
+    sql: ${bytes_sent} / {% parameter select_bytes_per_sec_timeframe %} ;;
     group_label: "Bytes"
   }
 
